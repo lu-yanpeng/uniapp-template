@@ -1,0 +1,9 @@
+.venv
+__pycache__
+.idea
+*.md
+*.doc
+node_modules
+docs
+dist
+backend/muji-mall-server/static

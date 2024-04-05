@@ -1,0 +1,23 @@
+from typing import Annotated
+
+from fastapi import APIRouter, HTTPException, Query
+
+from deta_space.base import uniapp_drive
+
+from .schemas import DriveListResponse
+
+router = APIRouter()
+
+
+@router.get('/list', response_model=DriveListResponse)
+def drive_list(name: Annotated[str, Query(min_length=1)]):
+    drive = uniapp_drive.get_drive(name)
+    if drive is None:
+        raise HTTPException(400, detail=f'数据库 {name} 不存在')
+
+    result: list[str] = drive.list().get('names', [])
+
+    return {
+        'data':
+            {'data': result, 'total': len(result)}
+    }
