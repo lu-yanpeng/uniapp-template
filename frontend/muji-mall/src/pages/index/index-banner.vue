@@ -1,26 +1,7 @@
 <script setup lang="ts">
-import { onLoad } from '@dcloudio/uni-app'
-import { ref, computed } from 'vue'
-import { SERVER_ADDRESS } from '@/constants'
+import { useImgSrc } from './hooks/getImgSrc'
 
-onLoad(async () => {
-  try {
-    const response = await uni.request({
-      url: `${SERVER_ADDRESS}/drive/list`,
-      data: {
-        name: 'banner'
-      }
-    })
-    fileNameList.value = response.data.data.data
-  } catch (e) {
-    console.log('异常')
-  }
-})
-
-const fileNameList = ref<string[]>([])
-const imgSrc = computed(() => {
-  return fileNameList.value.map((name) => `${SERVER_ADDRESS}/static/banner/${name}`)
-})
+const { imgSrc } = useImgSrc('special')
 </script>
 
 <template>

@@ -24,6 +24,9 @@ class UniAppDrive:
         return deta.Drive('news')
 
     def get_drive(self, drive_name: str) -> Union[_Drive, None]:
+        """
+        如果传入的drive_name不存在会直接创建对应数据库，所以这里只能手动添加已存在的数据库
+        """
         return getattr(self, drive_name, None)
 
 
