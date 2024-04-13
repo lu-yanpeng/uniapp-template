@@ -11,6 +11,9 @@ router = APIRouter()
 
 @router.get('/list', response_model=DriveListResponse)
 def drive_list(name: Annotated[str, Query(min_length=1)]):
+    """
+    返回这个数据库下的所有图片名
+    """
     drive = uniapp_drive.get_drive(name)
     if drive is None:
         raise HTTPException(400, detail=f'数据库 {name} 不存在')

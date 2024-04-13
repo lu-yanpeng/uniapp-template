@@ -20,7 +20,7 @@ app = FastAPI(
     exception_handlers=exception_handlers,
     responses=responses
 )
-print('-------------------ROOT_PATH-----------------', environ.get('ROOT_PATH', ''))
+
 app.add_middleware(
     CORSMiddleware,
     # 支持的源的列表
@@ -39,10 +39,6 @@ if environ.get('DEPLOY', ''):
 else:
     app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(api_router)
-
-@app.get('/')
-def index():
-    return {'msg': f'{environ.get("DEPLOY") + environ.get("ROOT_PATH")}'}
 
 
 @app.get("/docs", include_in_schema=False)

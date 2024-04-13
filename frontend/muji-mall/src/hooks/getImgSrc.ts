@@ -36,7 +36,12 @@ export const useImgSrc = (directoryName: string) => {
   const fileNameList = ref<string[]>([])
   // 每一个元素都是一个imgSrc地址，对应directoryName目录下的图片
   const imgSrc = computed(() => {
-    return fileNameList.value.map((name) => `${SERVER_ADDRESS}/static/${directoryName}/${name}`)
+    const __imgObj: Record<string, string> = {}
+    fileNameList.value.map((name) => {
+      __imgObj[name] = `${SERVER_ADDRESS}/static/${directoryName}/${name}`
+    })
+
+    return __imgObj
   })
 
   return {
