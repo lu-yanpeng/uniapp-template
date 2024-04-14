@@ -48,11 +48,9 @@ const onClick = () => {
     </view>
 
     <view class="flex px-4 text-sm">
-      <wd-button @click="onClick">登录</wd-button>
       <wd-button plain hairline type="info" @click="onClick">注册</wd-button>
+      <wd-button @click="onClick">登录</wd-button>
     </view>
-
     <wd-toast />
-
   </wd-form>
 </template>

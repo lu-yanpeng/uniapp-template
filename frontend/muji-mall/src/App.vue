@@ -4,7 +4,10 @@
 <template></template>
 
 <style lang="less">
-@import "@/tailwind-css/index.css";
+@import 'modern-normalize/modern-normalize.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /*这里的样式如果放到tailwind css里面，会导致grid-template-columns失效，暂时无法解决*/
 .layout-container {
