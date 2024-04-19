@@ -1,13 +1,41 @@
 <script setup lang="ts">
-</script>
+import { ref, provide, readonly } from 'vue'
+import { onLaunch } from '@dcloudio/uni-app'
+import { WxMenuButtonSymbol, WxNavHeightSymbol } from './symbol-keys'
 
-<template></template>
+// 微信导航栏高度，只有在微信小程序才会获取高度
+const wxNavHeight = ref<number>(0)
+provide(WxNavHeightSymbol, readonly(wxNavHeight))
+const wxMenuButton = ref<number>(0)
+provide(WxMenuButtonSymbol, readonly(wxMenuButton))
+
+onLaunch(() => {
+  // #ifdef MP-WEIXIN
+  const statusBarHeight = Math.ceil(uni.getSystemInfoSync().statusBarHeight as number)
+
+  const __menuButton = uni.getMenuButtonBoundingClientRect()
+  const height = Math.ceil(__menuButton.height)
+  const top = Math.ceil(__menuButton.top)
+
+  wxMenuButton.value = height + (top - statusBarHeight) * 2
+  wxNavHeight.value = wxMenuButton.value + statusBarHeight
+  // #endif
+})
+</script>
 
 <style lang="less">
 @import 'modern-normalize/modern-normalize.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .card-border {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+}
 
 /*这里的样式如果放到tailwind css里面，会导致grid-template-columns失效，暂时无法解决*/
 .layout-container {

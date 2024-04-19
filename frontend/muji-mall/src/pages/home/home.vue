@@ -1,59 +1,55 @@
 <script setup lang="ts">
-import { ref, provide, defineAsyncComponent } from 'vue'
-import Toolbar from './components/toolbar/index.vue'
-import FirstNav from './components/first-nav/index.vue'
-import { currentNavSymbol } from './symbol-keys'
+import HomeNav from './components/home-nav/index.vue'
+import PageWrap from './components/page-wrap/index.vue'
+import { provide, ref } from 'vue'
 import type { CurrentNav } from './types'
+import { currentNavSymbol } from './symbol-keys'
 
 const currentNav = ref<CurrentNav>('home')
 provide(currentNavSymbol, currentNav)
+</script>
 
-// #ifdef WEB
-// @ts-ignore
-// eslint-disable-next-line no-redeclare, no-import-assign
-const HomePage = defineAsyncComponent(() => import('./components/home-page/index.vue'))
-// @ts-ignore
-// eslint-disable-next-line no-redeclare, no-import-assign
-const OtherPage = defineAsyncComponent(() => import('./components/other-page/index.vue'))
-// #endif
+<script lang="ts">
+import { defineComponent, toRef } from 'vue'
+import { homeNavHeightSymbol } from './symbol-keys'
 
-// #ifdef MP-WEIXIN
-// 放到这里才能生效，如果放到hooks.ts里，这里不会生效
-// @ts-ignore
-// eslint-disable-next-line no-redeclare
-import HomePage from './components/home-page/index.vue'
-// @ts-ignore
-// eslint-disable-next-line no-redeclare
-import OtherPage from './components/other-page/index.vue'
-// #endif
+export default defineComponent({
+  data() {
+    return {
+      // 顶部状态栏加第一行导航栏的高度
+      homeNavHeight: 0
+    }
+  },
+  methods: {
+    getHomeNavHeight() {
+      uni
+        .createSelectorQuery()
+        .in(this)
+        .select('#home-nav')
+        .boundingClientRect((res: any) => {
+          this.homeNavHeight = Math.ceil(res.height) as number
+        })
+        .exec()
+    }
+  },
+  mounted() {
+    this.getHomeNavHeight()
+    uni.onWindowResize(this.getHomeNavHeight)
+  },
+  unmounted() {
+    uni.offWindowResize(this.getHomeNavHeight)
+  },
+  provide() {
+    return {
+      [homeNavHeightSymbol]: toRef(this, 'homeNavHeight')
+    }
+  }
+})
 </script>
 
 <template>
-  <!-- layout-container 写在App.vue里面，用来居中显示 -->
   <view>
-    <!-- #ifdef MP-WEIXIN -->
-    <view>
-      <!-- 自定义导航栏 https://ask.dcloud.net.cn/article/34921  -->
-      <wd-navbar title="这是logo" fixed placeholder safeAreaInsetTop></wd-navbar>
-    </view>
-    <!-- #endif -->
-
-    <!-- #ifdef WEB -->
-    <toolbar />
-    <!-- #endif -->
-
-    <first-nav />
-
-    <!-- #ifdef WEB -->
-    <keep-alive>
-      <home-page v-if="currentNav === 'home'" />
-      <other-page v-else />
-    </keep-alive>
-    <!-- #endif -->
-
-    <!-- #ifdef MP-WEIXIN -->
-    <home-page v-if="currentNav === 'home'" />
-    <other-page v-else />
-    <!-- #endif -->
+    <home-nav id="home-nav" />
+    <page-wrap />
   </view>
 </template>

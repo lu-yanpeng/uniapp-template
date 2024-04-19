@@ -8,7 +8,7 @@ micros:
     public: true    
     commands:
       - pnpm build:h5    
-    serve: dist/build/h5
+    serve: dist/build/h5 
 
   - name: api
     src: ./backend/muji-mall-server
