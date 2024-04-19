@@ -55,4 +55,4 @@ async def custom_swagger_ui_html():
 
 if __name__ == '__main__':
     from uvicorn import run
-    run('main:app', reload=True)
+    run('main:app', reload=True, host='0.0.0.0', port=8000)
