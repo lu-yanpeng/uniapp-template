@@ -42,9 +42,6 @@ export default defineComponent({
   unmounted() {
     uni.offWindowResize(this.getScrollViewHeight)
   },
-  onResize() {
-    this.getScrollViewHeight()
-  },
   inject: {
     homeNavHeight: {
       from: homeNavHeightSymbol,
@@ -123,30 +120,13 @@ export default defineComponent({
   <view class="home-page">
     <page-nav id="page-nav" @jump="onJump" />
 
-    <!-- #ifdef MP-WEIXIN -->
     <scroll-view
       id="scroll-view"
       class="scroll-view-height w-full"
       :scroll-y="true"
       :scroll-into-view="scrollIntoId"
     >
-      <view id="banner"><home-banner /></view>
-      <view id="special-collection" class="px-3.5"><special-collection /></view>
-      <view id="news" class="px-3.5"><news /></view>
-      <view id="category" class="px-3.5"><category /></view>
-      <view id="rank-list" class="px-3.5"><rank-list /></view>
-      <view id="page-video" class="px-3.5"><page-video /></view>
-      <view id="page-help" class="px-3.5"><page-help /></view>
-    </scroll-view>
-    <!-- #endif -->
-
-    <!-- #ifdef WEB -->
-    <scroll-view
-      id="scroll-view"
-      class="scroll-view scroll-view-height"
-      :scroll-y="true"
-      :scroll-into-view="scrollIntoId"
-    >
+      <!-- #ifdef WEB -->
       <home-banner class="full-width lg:![grid-column:content]" id="banner" />
       <special-collection class="content-width" id="special-collection" />
       <news id="news" />
@@ -154,8 +134,18 @@ export default defineComponent({
       <rank-list id="rank-list" />
       <page-video id="page-video" />
       <page-help id="page-help" />
+      <!-- #endif -->
+
+      <!-- #ifdef MP-WEIXIN -->
+      <view id="banner"><home-banner /></view>
+      <view id="special-collection" class="px-3.5"><special-collection /></view>
+      <view id="news" class="px-3.5"><news /></view>
+      <view id="category" class="px-3.5"><category /></view>
+      <view id="rank-list" class="px-3.5"><rank-list /></view>
+      <view id="page-video" class="px-3.5"><page-video /></view>
+      <view id="page-help" class="px-3.5"><page-help /></view>
+      <!-- #endif -->
     </scroll-view>
-    <!-- #endif -->
   </view>
 </template>
 
@@ -166,27 +156,10 @@ export default defineComponent({
 }
 
 /* #ifdef WEB */
-:deep(.scroll-view) {
+:deep(#scroll-view) {
   .uni-scroll-view-content {
-    display: grid;
-
-    --side-width: 14px;
-    /*通过设置网格开始线和结束线来定位元素，打开调试工具可以查看网格线*/
-    grid-template-columns:
-      [full-width-start] minmax(var(--side-width), 1fr) [content-start] minmax(
-        100% - 14px * 2,
-        75rem
-      )
-      [content-end] minmax(var(--side-width), 1fr)
-      [full-width-end];
-
-    /*微信不支持*选择器*/
-    & > * {
-      grid-column: content;
-    }
-    .full-width {
-      grid-column: full-width;
-    }
+    /*微信无法使用*选择器，这个样式不会生效*/
+    @apply layout-container;
   }
 }
 /* #endif */
