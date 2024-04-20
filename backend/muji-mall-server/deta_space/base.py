@@ -3,7 +3,11 @@ from typing import Union
 
 from config import settings
 
-deta = Deta(settings.DRIVE_KEY)
+if settings.DRIVE_KEY:
+    # 部署的时候必须提供DRIVE_KEY
+    deta = Deta(settings.DRIVE_KEY)
+else:
+    deta = None
 
 
 class UniAppDrive:
