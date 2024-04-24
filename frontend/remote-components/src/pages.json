@@ -1,0 +1,23 @@
+{
+  "pages": [
+    {
+  "path": "pages/activity/activity",
+  "style": {
+    "navigationBarTitleText": "节日活动",
+    "enablePullDownRefresh": true
+  }
+}
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^wd-(.*)": "wot-design-uni/components/wd-$1/wd-$1.vue"
+    }
+  }
+}
