@@ -20,7 +20,7 @@ if (process.env.UNI_PLATFORM === 'h5') {
   plugins.push(
     // https://github.com/originjs/vite-plugin-federation/blob/main/README-zh.md
     federation({
-      name: 'remote_app',
+      name: 'remote-app',
       // 需要暴露的模块
       exposes: {
         './activity': './src/pages/activity/activity.vue',
@@ -41,5 +41,6 @@ export default defineConfig({
   },
   build: {
     target: 'esnext'
-  }
+  },
+  base: '/remote-app/'
 })

@@ -7,6 +7,9 @@ import Category from './components/category/index.vue'
 import RankList from './components/rank-list.vue'
 import PageVideo from './components/home-page-video.vue'
 import pageHelp from './components/help.vue'
+
+import Test from 'remote-app/test'
+import Activity from 'remote-app/activity'
 </script>
 
 <script lang="ts">
@@ -126,6 +129,13 @@ export default defineComponent({
       :scroll-y="true"
       :scroll-into-view="scrollIntoId"
     >
+
+      <view>
+        <text>远程组件</text>
+        <test />
+        <activity />
+      </view>
+
       <!-- #ifdef WEB -->
       <home-banner class="full-width lg:![grid-column:content]" id="banner" />
       <special-collection class="content-width" id="special-collection" />

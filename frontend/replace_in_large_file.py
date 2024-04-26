@@ -1,19 +1,21 @@
+# 替换TARGET为相对导入，python >= 3.9
 from pathlib import Path
 from typing import Generator
 
 # 打包后的路径
-RAW_PATH = 'dist/build/h5/assets'
+RAW_PATH = 'muji-mall/dist/build/h5/assets'
 # 要导入的文件名，全局搜索它并改成相对导入
-TARGET = 'federation_fn_import'
+# 启动应用的时候如果控制台报错：某个包需要相对导入。就把它的名字复制到这里全局替换成相对导入
+TARGET = '..-node_modules-.pnpm-@dcloudio+uni-h5-vue@3.0.0-4000720240327002_vue@3.4.21_typescript@5.3.3_-node_modules-@dcloudio-uni-h5-vue-dist-__federation_shared_vue.f92f00c6.js'
 
 
 def main():
     """
     全局搜索TARGET目标文件，然后把他改成相对导入
     """
-    p = Path(RAW_PATH)
+    p = Path.cwd() / RAW_PATH
     if not p.exists():
-        print(f'路径 {RAW_PATH} 不存在')
+        print(f'路径 {p.resolve()} 不存在')
         return
 
     # 查找导入失败的文件名
@@ -23,7 +25,7 @@ def main():
             import_name = target_file.name
             break
     if not import_name:
-        print('目标文件不存在')
+        print(f'目标文件 {TARGET} 不存在')
         return
 
     # 要替换的字符
@@ -46,6 +48,7 @@ def main():
             elif __file.is_dir():
                 replace_in_large_file(__file.iterdir())
     replace_in_large_file(p.iterdir())
+    print(import_name, '替换完成', sep='\n')
 
 
 if __name__ == '__main__':
