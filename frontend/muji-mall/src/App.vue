@@ -20,6 +20,14 @@ onLaunch(() => {
   wxMenuButton.value = height + (top - statusBarHeight) * 2
   wxNavHeight.value = wxMenuButton.value + statusBarHeight
   // #endif
+
+  /*// 拦截器，拦截request API，让所有的请求只返回data字段，不返回其他内容
+  // 不建议使用，这样做会导致编辑器类型报错，它不知道这里进行了拦截，
+  uni.addInterceptor('request', {
+    returnValue(args) {
+      return args.data
+    }
+  })*/
 })
 </script>
 

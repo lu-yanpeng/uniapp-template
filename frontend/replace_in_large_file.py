@@ -3,10 +3,10 @@ from pathlib import Path
 from typing import Generator
 
 # 打包后的路径
-RAW_PATH = 'muji-mall/dist/build/h5/assets'
+RAW_PATH = 'remote-components/dist/build/h5/assets'
 # 要导入的文件名，全局搜索它并改成相对导入
 # 启动应用的时候如果控制台报错：某个包需要相对导入。就把它的名字复制到这里全局替换成相对导入
-TARGET = '..-node_modules-.pnpm-@dcloudio+uni-h5-vue@3.0.0-4000720240327002_vue@3.4.21_typescript@5.3.3_-node_modules-@dcloudio-uni-h5-vue-dist-__federation_shared_vue.f92f00c6.js'
+TARGET = '__federation_fn_import'
 
 
 def main():
@@ -35,9 +35,9 @@ def main():
 
     def replace_in_large_file(item: Generator[Path, None, None]):
         # 遍历RAW_PATH下的所有文件和文件夹
-        for __file in item:
-            if __file.is_file():
-                with __file.open('r+', encoding='utf-8') as input_file:
+        for __file in item:            
+            if __file.is_file() and __file.suffix in ('.js', '.css'):
+                with __file.open('r+', encoding='utf-8') as input_file:                                    
                     content = input_file.read()
                     # 在文件内容中查找并替换目标字符串
                     new_content = content.replace(target_str, replacement)

@@ -1,12 +1,12 @@
 {
   "pages": [
     {
-  "path": "pages/activity/activity",
-  "style": {
-    "navigationBarTitleText": "节日活动",
-    "enablePullDownRefresh": true
-  }
-}
+      "path": "pages/activity/activity",
+      "style": {
+        "navigationBarTitleText": "节日活动",
+        "enablePullDownRefresh": true
+      }
+    }
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",

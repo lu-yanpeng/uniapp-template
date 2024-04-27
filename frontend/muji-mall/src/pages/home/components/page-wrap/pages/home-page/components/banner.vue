@@ -1,7 +1,31 @@
 <script setup lang="ts">
-import { useImgSrc } from '@/hooks/getImgSrc'
+import { onMounted, ref } from 'vue'
+import { getBannerList } from '@/API/home/banner'
+import { SERVER_ADDRESS } from '@/constants'
 
-const { imgSrc } = useImgSrc('banner')
+const bannerList = ref<
+  {
+    title: string
+    component_id: string
+    imgSrc: string
+  }[]
+>([])
+onMounted(async () => {
+  try {
+    const { data } = await getBannerList()
+
+    data.map((item) => {
+      const { attributes } = item
+      bannerList.value.push({
+        title: attributes.title,
+        component_id: attributes.component_id.data.attributes.component_id,
+        imgSrc: SERVER_ADDRESS + attributes.cover_img.data.attributes.url
+      })
+    })
+  } catch (e) {
+    console.log()
+  }
+})
 </script>
 
 <template>
@@ -14,8 +38,13 @@ const { imgSrc } = useImgSrc('banner')
       :autoplay="true"
       :circular="true"
     >
-      <swiper-item v-for="(value, key) in imgSrc" :key="key">
-        <image :src="value" class="w-full h-full" mode="aspectFill" :lazy-load="true" />
+      <swiper-item v-for="(value, key) in bannerList" :key="key">
+        <navigator
+          class="w-full h-full"
+          :url="`/pages/activity/activity?componentId=${value.component_id}&title=${value.title}`"
+        >
+          <image :src="value.imgSrc" class="w-full h-full" mode="aspectFill" :lazy-load="true" />
+        </navigator>
       </swiper-item>
     </swiper>
   </view>

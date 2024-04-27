@@ -1,0 +1,53 @@
+{
+  "kind": "collectionType",
+  "collectionName": "activities",
+  "info": {
+    "singularName": "activity",
+    "pluralName": "activities",
+    "displayName": "Activity",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "desc": {
+      "type": "string"
+    },
+    "cover_img": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "sort": {
+      "type": "enumeration",
+      "enum": [
+        "banner-1",
+        "banner-2",
+        "banner-3",
+        "banner-4",
+        "banner-5",
+        "banner-6",
+        "banner-7",
+        "banner-8",
+        "banner-9",
+        "banner-10"
+      ]
+    },
+    "component_id": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::activity-component.activity-component"
+    }
+  }
+}

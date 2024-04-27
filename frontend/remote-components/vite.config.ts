@@ -24,10 +24,9 @@ if (process.env.UNI_PLATFORM === 'h5') {
       // 需要暴露的模块
       exposes: {
         './activity': './src/pages/activity/activity.vue',
-        './test': './src/components/test.vue'
       },
       // 如果打包 '@dcloudio/uni-h5' 页面无法显示，也不报错
-      shared: ['vue', '@dcloudio/uni-app', '@dcloudio/uni-components']
+      shared: ['vue', '@dcloudio/uni-app']
     })
   )
 }

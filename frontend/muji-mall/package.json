@@ -32,6 +32,7 @@
     "@rushstack/eslint-patch": "^1.10.1",
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^20.11.10",
+    "@types/qs": "^6.9.15",
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/runtime-core": "^3.3.11",

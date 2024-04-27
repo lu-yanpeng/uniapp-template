@@ -1,34 +1,51 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { defineAsyncComponent, onMounted, ref } from 'vue'
+import { useGetCompsPath } from './hooks'
 
-const count = ref<number>(0)
-</script>
-
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  data() {
-    return {
-      width: 0,
-      height: 0
-    }
-  },
-  mounted() {
-    uni.createSelectorQuery().in(this).selectViewport().boundingClientRect((res) => {
-      console.log('宽高', res.width, res.height)
-      this.width = res.width
-      this.height = res.height
-    }).exec()
+withDefaults(
+  defineProps<{
+    componentId?: string
+  }>(),
+  {
+    componentId: '-1'
   }
+)
+const emits = defineEmits<{
+  mounted: []
+}>()
+
+const defaultComps = defineAsyncComponent(() => import('./components/default.vue'))
+
+const comps = ref<Record<string, any>>({})
+
+onMounted(async () => {
+  try {
+    const { data } = await useGetCompsPath()
+console.log('data', data)
+    data.map((item) => {
+      const { component_id, component_path } = item.attributes
+      comps.value[component_id] = defineAsyncComponent(() => {
+        const path = component_path.split('/')
+        switch (path.length) {
+          case 2:
+            return import(`./components/${path[0]}/${path[1]}.vue`)
+          case 3:
+            return import(`./components/${path[0]}/${path[1]}/${path[2]}.vue`)
+          default:
+            return import(`./components/${path[0]}.vue`)
+        }
+      })
+    })
+  } catch (e: any) {
+    console.log('服务器异常')
+  }
+
+  emits('mounted')
 })
 </script>
 
 <template>
   <view>
-    <wd-button type="error" @click="count += 1">计数 -- {{ count }}</wd-button>
-    <view>
-      <text>宽{{ width }} --- 高{{ height }}</text>
-    </view>
+    <component :is="comps[componentId] ?? defaultComps" />
   </view>
 </template>

@@ -60,6 +60,9 @@ importers:
       '@types/node':
         specifier: ^20.11.10
         version: 20.12.4
+      '@types/qs':
+        specifier: ^6.9.15
+        version: 6.9.15
       '@vue/eslint-config-prettier':
         specifier: ^9.0.0
         version: 9.0.0(eslint@8.57.0)(prettier@3.2.5)
@@ -1370,6 +1373,9 @@ packages:
 
   '@types/prettier@2.7.3':
     resolution: {integrity: sha512-+68kP9yzs4LMp7VNh8gdzMSPZFL44MLGqiHWvttYJe+6qnuVr4Ek9wSBQoveqY/r+LwjCcU29kNVkidwim+kYA==}
+
+  '@types/qs@6.9.15':
+    resolution: {integrity: sha512-uXHQKES6DQKKCLh441Xv/dwxOq1TVS3JPUMlEqoEglvlhR6Mxnlew/Xq/LRVHpLyk7iK3zODe1qYHIMltO7XGg==}
 
   '@types/semver@7.5.8':
     resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==}
@@ -6033,6 +6039,8 @@ snapshots:
       undici-types: 5.26.5
 
   '@types/prettier@2.7.3': {}
+
+  '@types/qs@6.9.15': {}
 
   '@types/semver@7.5.8': {}
 

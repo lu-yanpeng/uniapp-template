@@ -5,7 +5,6 @@ import tailwindcss from 'tailwindcss'
 import autoprefixer from 'autoprefixer'
 import federation from '@originjs/vite-plugin-federation'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     uni(),
@@ -15,12 +14,13 @@ export default defineConfig({
       // web端禁用这个插件，否则打包后样式错乱，应该只在小程序端开启
       disabled: process.env.UNI_PLATFORM === 'h5'
     }),
+    // https://github.com/originjs/vite-plugin-federation/blob/main/README-zh.md
     federation({
       name: 'host-app',
       remotes: {
-        'remote-app': 'http://36.140.84.73:8000/remote-app/assets/remoteEntry.js'
+        'remote-app': 'http://localhost:4173/remote-app/assets/remoteEntry.js'
       },
-      shared: ['vue', '@dcloudio/uni-app', '@dcloudio/uni-components']
+      shared: ['vue', '@dcloudio/uni-app']
     })
   ],
   css: {
@@ -31,5 +31,5 @@ export default defineConfig({
   build: {
     target: 'esnext'
   },
-  base: '/host-app/'
+  // base: '/host-app/'
 })
