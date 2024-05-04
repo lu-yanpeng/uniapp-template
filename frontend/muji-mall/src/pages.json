@@ -14,15 +14,21 @@
         "navigationBarTitleText": "登录",
         "enablePullDownRefresh": true
       }
-    }
-    ,
+    },
     {
-  "path": "pages/activity/activity",
-  "style": {
-    "navigationBarTitleText": "活动",
-    "enablePullDownRefresh": true
-  }
-}
+      "path": "pages/activity/activity",
+      "style": {
+        "navigationBarTitleText": "活动",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/product/product",
+      "style": {
+        "navigationBarTitleText": "商品详情",
+        "enablePullDownRefresh": true
+      }
+    }
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",

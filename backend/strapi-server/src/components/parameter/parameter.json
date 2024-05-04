@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_parameter_parameters",
+  "info": {
+    "displayName": "Parameter",
+    "icon": "filter",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "other": {
+      "type": "component",
+      "repeatable": true,
+      "component": "dict.dict"
+    }
+  }
+}

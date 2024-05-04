@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_colors_colors",
+  "info": {
+    "displayName": "colors",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "uid": {
+      "type": "string",
+      "unique": false,
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "unique": false,
+      "required": true
+    },
+    "cover": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  }
+}

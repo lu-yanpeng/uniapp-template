@@ -36,6 +36,10 @@ onLaunch(() => {
 @tailwind components;
 @tailwind utilities;
 
+* {
+  box-sizing: border-box;
+}
+
 @layer utilities {
   .card-border {
     border: 1px solid #e6e6e6;

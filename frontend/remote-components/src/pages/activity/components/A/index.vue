@@ -7,11 +7,11 @@ const getImageUrl = (name: string) => {
   }
   return new URL(`./img/${name}.jpg`, import.meta.url).href
 }
+// TODO:应该从服务器获取图片数据，并且每个商品图片带着商品id
 </script>
 
 <template>
-  <view class="layout-container py_20 _container">
-    <text class="text-fuchsia-500 text-5xl">测试文字</text>
+  <view class="layout-container py_20 _container">    
     <img
       :src="getImageUrl('04184e2f-8f8f-4bd8-a944-5c914e01a81c')"
       class="w_full h_full align_top"
@@ -32,7 +32,7 @@ const getImageUrl = (name: string) => {
     />
 
     <view class="w_full" style="aspect-ratio: 1 / 0.77">
-      <img
+      <img        
         :src="getImageUrl('504095be-142d-4b97-affe-61876d6baec5')"
         class="w_50 h_full align_top"
         loading="lazy"

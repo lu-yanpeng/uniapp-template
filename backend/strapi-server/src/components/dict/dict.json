@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_dict_dicts",
+  "info": {
+    "displayName": "Dict",
+    "icon": "oneWay",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "value": {
+      "type": "text",
+      "required": true
+    },
+    "key": {
+      "type": "enumeration",
+      "enum": [
+        "gender",
+        "code",
+        "ref",
+        "season",
+        "material",
+        "producer"
+      ],
+      "required": true
+    }
+  }
+}

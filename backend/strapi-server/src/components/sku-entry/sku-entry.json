@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sku_entry_sku_entries",
+  "info": {
+    "displayName": "sku_entry",
+    "icon": "calendar",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "sku": {
+      "displayName": "sku_single",
+      "type": "component",
+      "repeatable": true,
+      "component": "sku-single.sku-single"
+    },
+    "color": {
+      "displayName": "colors",
+      "type": "component",
+      "repeatable": true,
+      "component": "colors.colors"
+    }
+  }
+}

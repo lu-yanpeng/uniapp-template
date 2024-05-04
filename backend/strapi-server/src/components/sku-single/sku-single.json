@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_sku_single_sku_singles",
+  "info": {
+    "displayName": "sku_single",
+    "icon": "book",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "size": {
+      "type": "string",
+      "required": true
+    },
+    "color": {
+      "type": "string",
+      "required": true
+    },
+    "inventory": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    },
+    "price": {
+      "type": "integer",
+      "required": true,
+      "min": 0
+    }
+  }
+}

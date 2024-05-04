@@ -7,7 +7,7 @@ withDefaults(
     componentId?: string
   }>(),
   {
-    componentId: '-1'
+    componentId: 'A'
   }
 )
 const emits = defineEmits<{

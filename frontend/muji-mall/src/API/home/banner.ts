@@ -37,7 +37,7 @@ export type BannerData = {
       }
     }
   }
-}
+}[]
 export const getBannerList = async (): Promise<StrapiResponse<BannerData>> => {
   return (await uni
     .request({

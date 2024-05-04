@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_images_images",
+  "info": {
+    "displayName": "images",
+    "icon": "layer",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "img": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "uid": {
+      "type": "string",
+      "required": false,
+      "unique": true
+    }
+  }
+}

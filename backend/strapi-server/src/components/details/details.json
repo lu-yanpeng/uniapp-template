@@ -1,0 +1,35 @@
+{
+  "collectionName": "components_details_details",
+  "info": {
+    "displayName": "details",
+    "icon": "calendar"
+  },
+  "options": {},
+  "attributes": {
+    "color": {
+      "type": "string",
+      "required": true
+    },
+    "inventory": {
+      "type": "integer",
+      "unique": false,
+      "required": true,
+      "min": 0
+    },
+    "cover": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "price": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    }
+  }
+}
