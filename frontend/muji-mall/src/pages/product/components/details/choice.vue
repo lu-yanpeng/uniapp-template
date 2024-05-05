@@ -16,7 +16,7 @@ defineEmits<{
   <view class="flex items-center">
     <text class="flex-none pr-5 whitespace-nowrap text-base font-bold">{{ label }}</text>
 
-    <view @click="$emit('choice')" class="flex flex-1 items-center">
+    <view @click="$emit('choice')" class="flex flex-1 items-center justify-between">
       <view
         class="text-xs text-[#585858] flex-1 overflow-ellipsis overflow-hidden max-w-[280px]"
         ><slot

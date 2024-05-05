@@ -5,6 +5,8 @@ import { productSymbol } from './symbol-keys'
 import type { Product } from '@/API/products'
 import ProductBanner from './components/banner.vue'
 import ProductDetails from './components/details/index.vue'
+import ProductMain from './components/product-main.vue'
+import ProductTabBar from './components/tab-bar.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -32,8 +34,13 @@ onMounted(async () => {
 </script>
 
 <template>
-  <view class="bg-[#f2f2f2]">
-    <product-banner />
-    <product-details />
+  <view class="grid [grid-template-rows:1fr_auto] [height:calc(100vh-44px)]">
+    <view class="overflow-y-scroll h-full">
+      <product-banner />
+      <product-details />
+      <product-main />
+    </view>
+
+    <product-tab-bar />
   </view>
 </template>

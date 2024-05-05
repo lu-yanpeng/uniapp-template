@@ -9,6 +9,7 @@ import SetAddressComps from '@/components/set-address/index.vue'
 import Popup from './popup__.vue'
 import PopupChoiceColor from './popup__choice-color.vue'
 import PopupProductDetail from './popup__product-detail.vue'
+import Recommend from './recommend.vue'
 
 const addressStore = useAddressStore()
 const productData = inject(productSymbol, null) as Ref<Product['attributes'] | null> | null
@@ -26,7 +27,7 @@ const addressShow = ref<boolean>(false)
 </script>
 
 <template>
-  <view class="bg-white">
+  <view>
     <!-- 标题 -->
     <view class="py-4 px-[1.125rem]">
       <view class="flex justify-between items-baseline">
@@ -45,7 +46,7 @@ const addressShow = ref<boolean>(false)
       </view>
     </view>
     <!-- 地址 -->
-    <view class="py-4" style="border-top: 1px solid #f2f2f2">
+    <view class="py-4" style="border-top: 0.375rem solid #f2f2f2">
       <choice label="发货" class="px-[1.125rem]" @choice="addressShow = true">
         <text class="whitespace-nowrap">配送至：{{ addressStore.prefecture }} | 普通快递￥7</text>
       </choice>
@@ -88,8 +89,8 @@ const addressShow = ref<boolean>(false)
     <view class="py-4" style="border-top: 1px solid #f2f2f2">
       <choice label="产品参数" class="px-[1.125rem]" @choice="openPopup('product-detail')" />
     </view>
-
-    <view class="h-[500px]"></view>
+    <!-- 推荐商品 -->
+    <recommend />
 
     <!-- 弹出框，设置颜色，查看产品参数 -->
     <popup v-model="show">
