@@ -99,8 +99,21 @@ export type Product = {
     detail: string
   }
 }
+// 获取商品主图
 export const getProduct = async (id: string): Promise<StrapiResponse<Product>> => {
   return await uni.request({
     url: `${SERVER_ADDRESS}/api/products/${id}?${getProductQuery}`
   }).then(({ data }) => data) as StrapiResponse<Product>
+}
+
+type PriceDesc = {
+  attributes: {
+    img: string
+  }
+}
+// 获取详情图底部的价格说明和退货换说明，每个商品的说明都相同，都是两个图片
+export const getPriceDesc = async (): Promise<StrapiResponse<PriceDesc>> => {
+  return await uni.request({
+    url: `${SERVER_ADDRESS}/api/price-desc?fields[0]=img`
+  }).then(({ data }) => data) as StrapiResponse<PriceDesc>
 }
