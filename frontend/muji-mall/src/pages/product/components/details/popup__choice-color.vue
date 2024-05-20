@@ -27,7 +27,7 @@ watch(
   () => currentImageIndex.value,
   (v) => {
     if (v === -1) {
-      currentColorImageUrl.value = SERVER_ADDRESS + productData?.value?.spu.cover.data[0].attributes.url
+      currentColorImageUrl.value = SERVER_ADDRESS + productData?.value?.spu.cover.data.attributes.url
     }
   },
   { immediate: true }

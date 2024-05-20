@@ -13,7 +13,7 @@ const props = withDefaults(
     id: string
   }>(),
   {
-    id: '5'
+    id: '1'
   }
 )
 
@@ -21,7 +21,7 @@ const productData = ref<Product['attributes'] | null>(null)
 provide(productSymbol, readonly(productData))
 
 onMounted(async () => {
-  let id = props.id ?? '5'
+  let id = props.id ?? '1'
   const { data } = await getProduct(id)
   productData.value = data.attributes
 })

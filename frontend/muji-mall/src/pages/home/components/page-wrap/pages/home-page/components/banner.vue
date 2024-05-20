@@ -18,7 +18,7 @@ onMounted(async () => {
       const { attributes } = item
       bannerList.value.push({
         title: attributes.title,
-        component_id: attributes.component_id.data.attributes.component_id,
+        component_id: attributes.activity_component.data.attributes.component_id,
         imgSrc: SERVER_ADDRESS + attributes.cover_img.data.attributes.url
       })
     })

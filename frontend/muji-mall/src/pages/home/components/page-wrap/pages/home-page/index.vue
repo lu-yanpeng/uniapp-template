@@ -128,12 +128,12 @@ export default defineComponent({
     >
       <!-- #ifdef WEB -->
       <home-banner class="full-width lg:![grid-column:content]" id="banner" />
-<!--      <special-collection class="content-width" id="special-collection" />
+      <special-collection class="content-width" id="special-collection" />
       <news id="news" />
       <category id="category" />
       <rank-list id="rank-list" />
       <page-video id="page-video" />
-      <page-help id="page-help" />-->
+      <page-help id="page-help" />
       <!-- #endif -->
 
       <!-- #ifdef MP-WEIXIN -->

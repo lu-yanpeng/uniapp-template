@@ -8,8 +8,8 @@ const getBannerListQuery = useQsStringify({
     cover_img: {
       fields: ['url']
     },
-    component_id: {
-      fields: ['component_id', 'component_name']
+    activity_component: {
+      fields: ['component_id', 'component_path']
     }
   },
   sort: ['sort']
@@ -27,7 +27,7 @@ export type BannerData = {
         }
       }
     }
-    component_id: {
+    activity_component: {
       data: {
         id: number
         attributes: {

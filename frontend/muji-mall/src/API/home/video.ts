@@ -1,6 +1,7 @@
 import { SERVER_ADDRESS } from '@/constants'
 import type { StrapiResponse } from '@/types/strapi'
 import { useQsStringify } from '@/hooks/commonTool'
+import type { Product } from '@/API/products'
 
 const getVideoQuery = useQsStringify({
   fields: ['createdAt'],

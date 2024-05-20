@@ -1,8 +1,33 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import AsideTitle from '@/components/aside-title/index.vue'
-import { useImgSrc } from '@/hooks/getImgSrc'
+import { getCampaigns } from '@/API/home/campaigns'
+import { SERVER_ADDRESS } from '@/constants'
 
-const { imgSrc } = useImgSrc('special')
+const campaignsList = ref<
+  {
+    title: string
+    component_id: string
+    imgSrc: string
+  }[]
+>([])
+
+onMounted(async () => {
+  try {
+    const { data } = await getCampaigns()
+
+    data.map((item) => {
+      const { attributes } = item
+      campaignsList.value.push({
+        title: attributes.title,
+        component_id: attributes.campaign_component.data.attributes.component_id,
+        imgSrc: SERVER_ADDRESS + attributes.cover_img.data.attributes.url
+      })
+    })
+  } catch (e) {
+    console.log()
+  }
+})
 </script>
 
 <template>
@@ -12,7 +37,7 @@ const { imgSrc } = useImgSrc('special')
     <view
       class="flex flex-wrap justify-around lg:grid lg:[grid-template-columns:repeat(auto-fill,minmax(280px,1fr))] lg:[grid-auto-rows:175px] lg:gap-x-6"
     >
-      <view v-if="!Object.keys(imgSrc).length" class="flex flex-wrap justify-around">
+      <view v-if="!Object.keys(campaignsList).length" class="flex flex-wrap justify-around">
         <view class="mb-3" v-for="i in 6" :key="i">
           <wd-skeleton
             theme="image"
@@ -28,13 +53,13 @@ const { imgSrc } = useImgSrc('special')
       </view>
 
       <view
-        v-for="(value, key, index) in imgSrc"
+        v-for="(value, key) in campaignsList"
         :key="key"
         class="w-[10.125rem] h-[7.5rem] mb-3 overflow-hidden card-border lg:w-full lg:h-full lg:mb-0"
-        :class="{ 'lg:hidden': index === 5 || index === 4 }"
+        :class="{ 'lg:hidden': key === 5 || key === 4 }"
         style="box-shadow: -2px 2px 6px 2px #ccc"
       >
-        <image :src="value" class="w-full h-full" mode="aspectFill" :lazy-load="true" />
+        <image :src="value.imgSrc" class="w-full h-full" mode="aspectFill" :lazy-load="true" />
       </view>
     </view>
   </view>

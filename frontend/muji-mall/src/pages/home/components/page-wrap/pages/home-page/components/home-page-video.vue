@@ -1,25 +1,28 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import AsideTitle from '@/components/aside-title/index.vue'
-import { useImgSrc } from '@/hooks/getImgSrc'
-import { computed } from 'vue'
+import { getVideo } from '@/API/home/video'
+import { SERVER_ADDRESS } from '@/constants'
 
-const { imgSrc } = useImgSrc('video')
-
-// 从静态文件video中找出视频封面和视频
-const __filter = (suffix: string) => {
-  let _src = ''
-  for (const [key, value] of Object.entries(imgSrc.value)) {
-    if (key.endsWith(suffix)) {
-      _src = value
-      break
+const videoData = ref<{
+  videoSrc: string
+  poster: string
+}>({
+  videoSrc: '',
+  poster: ''
+})
+onMounted(async () => {
+  const {
+    data: {
+      attributes: { video, poster }
     }
+  } = await getVideo()
+
+  videoData.value = {
+    videoSrc: `${SERVER_ADDRESS}${video.data.attributes.url}`,
+    poster: `${SERVER_ADDRESS}${poster.data.attributes.url}`
   }
-  return _src
-}
-// 视频封面
-const poster = computed(() => __filter('.jpg'))
-// 视频
-const videoSrc = computed(() => __filter('.mp4'))
+})
 </script>
 
 <template>
@@ -27,7 +30,11 @@ const videoSrc = computed(() => __filter('.mp4'))
     <aside-title left-text="视频" right-text="" />
 
     <view class="w-full aspect-video">
-      <video class="w-full h-full aspect-video" :src="videoSrc" :poster="poster" />
+      <video
+        class="w-full h-full aspect-video"
+        :src="videoData.videoSrc"
+        :poster="videoData.poster"
+      />
     </view>
   </view>
 </template>

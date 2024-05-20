@@ -47,7 +47,7 @@ const addressShow = ref<boolean>(false)
     <view class="py-4 px-[1.125rem]">
       <view class="flex justify-between items-baseline">
         <view class="font-bold">
-          <text class="text-sm">¥</text>
+          <text class="text-sm">¥ </text>
           <text class="text-xl">{{ priceRange }}</text>
         </view>
         <view class="text-[#585858] text-xs">
