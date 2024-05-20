@@ -793,7 +793,7 @@ export interface ApiActivityActivity extends Schema.CollectionType {
   info: {
     singularName: 'activity';
     pluralName: 'activities';
-    displayName: 'Activity';
+    displayName: 'activity';
     description: '';
   };
   options: {
@@ -801,23 +801,23 @@ export interface ApiActivityActivity extends Schema.CollectionType {
   };
   attributes: {
     desc: Attribute.String;
+    title: Attribute.String & Attribute.Required;
     cover_img: Attribute.Media & Attribute.Required;
-    title: Attribute.String;
     sort: Attribute.Enumeration<
       [
-        'banner-1',
-        'banner-2',
-        'banner-3',
-        'banner-4',
-        'banner-5',
-        'banner-6',
-        'banner-7',
-        'banner-8',
-        'banner-9',
+        'banner-01',
+        'banner-02',
+        'banner-03',
+        'banner-04',
+        'banner-05',
+        'banner-06',
+        'banner-07',
+        'banner-08',
+        'banner-09',
         'banner-10'
       ]
     >;
-    component_id: Attribute.Relation<
+    activity_component: Attribute.Relation<
       'api::activity.activity',
       'oneToOne',
       'api::activity-component.activity-component'
@@ -873,38 +873,180 @@ export interface ApiActivityComponentActivityComponent
   };
 }
 
-export interface ApiGadgetGadget extends Schema.CollectionType {
-  collectionName: 'gadgets';
+export interface ApiCampaignCampaign extends Schema.CollectionType {
+  collectionName: 'campaigns';
   info: {
-    singularName: 'gadget';
-    pluralName: 'gadgets';
-    displayName: 'Gadget';
+    singularName: 'campaign';
+    pluralName: 'campaigns';
+    displayName: 'campaign';
     description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    name: Attribute.String;
-    products: Attribute.Relation<
-      'api::gadget.gadget',
-      'oneToMany',
-      'api::product.product'
+    title: Attribute.String & Attribute.DefaultTo<' '>;
+    desc: Attribute.String;
+    cover_img: Attribute.Media & Attribute.Required;
+    campaign_component: Attribute.Relation<
+      'api::campaign.campaign',
+      'oneToOne',
+      'api::campaign-component.campaign-component'
     >;
-    test1: Attribute.Blocks;
-    test2: Attribute.RichText;
-    images: Attribute.Media;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::gadget.gadget',
+      'api::campaign.campaign',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::gadget.gadget',
+      'api::campaign.campaign',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCampaignComponentCampaignComponent
+  extends Schema.CollectionType {
+  collectionName: 'campaign_components';
+  info: {
+    singularName: 'campaign-component';
+    pluralName: 'campaign-components';
+    displayName: 'campaign-component';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    component_id: Attribute.String & Attribute.Required;
+    component_path: Attribute.String & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::campaign-component.campaign-component',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::campaign-component.campaign-component',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCategory1Category1 extends Schema.CollectionType {
+  collectionName: 'category_1s';
+  info: {
+    singularName: 'category-1';
+    pluralName: 'category-1s';
+    displayName: 'category-1';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.Text & Attribute.Required & Attribute.Unique;
+    desc: Attribute.Text;
+    cover: Attribute.Media;
+    child: Attribute.Relation<
+      'api::category-1.category-1',
+      'oneToMany',
+      'api::category-2.category-2'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::category-1.category-1',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::category-1.category-1',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCategory2Category2 extends Schema.CollectionType {
+  collectionName: 'category_2s';
+  info: {
+    singularName: 'category-2';
+    pluralName: 'category-2s';
+    displayName: 'category-2';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required & Attribute.Unique;
+    desc: Attribute.Text;
+    cover: Attribute.Media;
+    parent: Attribute.Relation<
+      'api::category-2.category-2',
+      'manyToOne',
+      'api::category-1.category-1'
+    >;
+    product: Attribute.Relation<
+      'api::category-2.category-2',
+      'manyToOne',
+      'api::product.product'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::category-2.category-2',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::category-2.category-2',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiPriceDescPriceDesc extends Schema.SingleType {
+  collectionName: 'price_descs';
+  info: {
+    singularName: 'price-desc';
+    pluralName: 'price-descs';
+    displayName: 'price-desc';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    img: Attribute.RichText & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::price-desc.price-desc',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::price-desc.price-desc',
       'oneToOne',
       'admin::user'
     > &
@@ -928,12 +1070,12 @@ export interface ApiProductProduct extends Schema.CollectionType {
     params: Attribute.Component<'parameter.parameter'>;
     sku: Attribute.Component<'sku-entry.sku-entry'>;
     banner: Attribute.Component<'banner.banner'>;
-    gadget: Attribute.Relation<
-      'api::product.product',
-      'manyToOne',
-      'api::gadget.gadget'
-    >;
     detail: Attribute.RichText;
+    category: Attribute.Relation<
+      'api::product.product',
+      'oneToMany',
+      'api::category-2.category-2'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -945,6 +1087,38 @@ export interface ApiProductProduct extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::product.product',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiVideoVideo extends Schema.SingleType {
+  collectionName: 'videos';
+  info: {
+    singularName: 'video';
+    pluralName: 'videos';
+    displayName: 'video';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    video: Attribute.Media;
+    poster: Attribute.Media;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::video.video',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::video.video',
       'oneToOne',
       'admin::user'
     > &
@@ -972,8 +1146,13 @@ declare module '@strapi/types' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::activity.activity': ApiActivityActivity;
       'api::activity-component.activity-component': ApiActivityComponentActivityComponent;
-      'api::gadget.gadget': ApiGadgetGadget;
+      'api::campaign.campaign': ApiCampaignCampaign;
+      'api::campaign-component.campaign-component': ApiCampaignComponentCampaignComponent;
+      'api::category-1.category-1': ApiCategory1Category1;
+      'api::category-2.category-2': ApiCategory2Category2;
+      'api::price-desc.price-desc': ApiPriceDescPriceDesc;
       'api::product.product': ApiProductProduct;
+      'api::video.video': ApiVideoVideo;
     }
   }
 }

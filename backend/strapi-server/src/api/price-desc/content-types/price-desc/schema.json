@@ -1,0 +1,19 @@
+{
+  "kind": "singleType",
+  "collectionName": "price_descs",
+  "info": {
+    "singularName": "price-desc",
+    "pluralName": "price-descs",
+    "displayName": "price-desc"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "img": {
+      "type": "richtext",
+      "required": true
+    }
+  }
+}

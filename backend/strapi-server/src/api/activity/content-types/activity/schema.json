@@ -4,7 +4,7 @@
   "info": {
     "singularName": "activity",
     "pluralName": "activities",
-    "displayName": "Activity",
+    "displayName": "activity",
     "description": ""
   },
   "options": {
@@ -14,6 +14,10 @@
   "attributes": {
     "desc": {
       "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "required": true
     },
     "cover_img": {
       "type": "media",
@@ -26,25 +30,22 @@
         "audios"
       ]
     },
-    "title": {
-      "type": "string"
-    },
     "sort": {
       "type": "enumeration",
       "enum": [
-        "banner-1",
-        "banner-2",
-        "banner-3",
-        "banner-4",
-        "banner-5",
-        "banner-6",
-        "banner-7",
-        "banner-8",
-        "banner-9",
+        "banner-01",
+        "banner-02",
+        "banner-03",
+        "banner-04",
+        "banner-05",
+        "banner-06",
+        "banner-07",
+        "banner-08",
+        "banner-09",
         "banner-10"
       ]
     },
-    "component_id": {
+    "activity_component": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::activity-component.activity-component"

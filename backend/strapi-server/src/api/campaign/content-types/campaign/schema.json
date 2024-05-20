@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "campaigns",
+  "info": {
+    "singularName": "campaign",
+    "pluralName": "campaigns",
+    "displayName": "campaign",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": " "
+    },
+    "desc": {
+      "type": "string"
+    },
+    "cover_img": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "campaign_component": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::campaign-component.campaign-component"
+    }
+  }
+}

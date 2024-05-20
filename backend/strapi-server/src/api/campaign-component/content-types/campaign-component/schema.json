@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "campaign_components",
+  "info": {
+    "singularName": "campaign-component",
+    "pluralName": "campaign-components",
+    "displayName": "campaign-component",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "component_id": {
+      "type": "string",
+      "required": true
+    },
+    "component_path": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
