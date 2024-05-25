@@ -26,6 +26,9 @@ importers:
       pinia:
         specifier: 2.0.36
         version: 2.0.36(typescript@5.3.3)(vue@3.4.21(typescript@5.3.3))
+      qs:
+        specifier: ^6.12.1
+        version: 6.12.1
       vue:
         specifier: ^3.3.11
         version: 3.4.21(typescript@5.3.3)
@@ -3460,6 +3463,10 @@ packages:
 
   qs@6.11.0:
     resolution: {integrity: sha512-MvjoMCJwEarSbUYk5O+nmoSzSutSsTwF85zcHPQ9OrlFoZOYIjaqBAJIqIXjptyD5vThxGq52Xu/MaJzRkIk4Q==}
+    engines: {node: '>=0.6'}
+
+  qs@6.12.1:
+    resolution: {integrity: sha512-zWmv4RSuB9r2mYQw3zxQuHWeU+42aKi1wWig/j4ele4ygELZ7PEO6MM7rim9oAQH2A5MWfsAVf/jPvTPgCbvUQ==}
     engines: {node: '>=0.6'}
 
   querystringify@2.2.0:
@@ -8452,6 +8459,10 @@ snapshots:
   qrcode-terminal@0.12.0: {}
 
   qs@6.11.0:
+    dependencies:
+      side-channel: 1.0.6
+
+  qs@6.12.1:
     dependencies:
       side-channel: 1.0.6
 

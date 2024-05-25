@@ -1,27 +1,19 @@
 # Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
 v: 0
 micros:
-  - name: muji-mall
-    src: ./frontend/muji-mall
-    engine: static
-    primary: true
-    public: true    
-    commands:
-      - pnpm build:h5    
-    serve: dist/build/h5 
+  # - name: muji-mall
+  #   src: ./frontend/muji-mall
+  #   engine: static
+  #   primary: true
+  #   public: true    
+  #   commands:
+  #     - pnpm build:h5    
+  #   serve: dist/build/h5 
 
-  - name: api
-    src: ./backend/muji-mall-server
+  - name: proxy
+    src: ./backend/https_proxy
     engine: python3.9    
-    path: api
-    public: true
-    presets:
-      env:
-        - name: ROOT_PATH
-          description: 部署的时候需要设置前缀
-          default: "/api"
-
-        - name: DEPLOY
-          description: 部署的时候用服务器上的/static接口
-          default: "True"  
+    # path: proxy
+    primary: true
+    public: true            
     run: uvicorn main:app

@@ -11,18 +11,7 @@ onMounted(async () => {
 })
 
 const productData = inject(productSymbol, null) as Ref<Product['attributes'] | null> | null
-// 商品材质
-const material = computed(() => {
-  if (!productData || !productData.value) {
-    return ''
-  }
-  for (const item of productData.value.params.other) {
-    if (item.key === 'material') {
-      return item.value
-    }
-  }
-  return ''
-})
+
 // 产品规格
 const specifications = computed(() => {
   if (!productData || !productData.value) {
@@ -40,18 +29,13 @@ const specifications = computed(() => {
   colors = colors.slice(0, -1)
   return `${sizes}、${colors}`
 })
-// 产地
-const producer = computed(() => {
+
+const productParams = computed(() => {
   if (!productData || !productData.value) {
-    return ''
+    return { material: '', producer: '' }
   }
 
-  for (const params of productData.value.params.other) {
-    if (params.key === 'producer') {
-      return params.value
-    }
-  }
-  return ''
+  return productData.value.params
 })
 
 const imgPathRegex = /!\[.*?]\((.*?)\)/g
@@ -107,7 +91,7 @@ const mainImages = computed(() => {
       <view>
         <view class="text-xs text-[#666]">
           <text>商品材质：</text>
-          <text>{{ material }}</text>
+          <text>{{ productParams['material'] }}</text>
         </view>
         <view class="text-xs text-[#666]">
           <text>规格：</text>
@@ -115,7 +99,7 @@ const mainImages = computed(() => {
         </view>
         <view class="text-xs text-[#666]">
           <text>产地：</text>
-          <text>{{ producer }}</text>
+          <text>{{ productParams['producer'] }}</text>
         </view>
       </view>
     </view>

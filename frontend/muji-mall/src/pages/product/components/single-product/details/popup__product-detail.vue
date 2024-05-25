@@ -54,12 +54,14 @@ const paramsLabel: any = {
         </view>
       </view>
 
-      <view v-for="i in productData?.params.other" :key="i.key" class="px-4 py-3.5 flex text-sm" style="border-bottom: 1px solid #ccc">
-        <view class="w-[5.5rem] flex-none"><text class="text-[#585858]">{{ paramsLabel[i.key] }}：</text></view>
-        <view class="flex-1 overflow-hidden">
-          <text class="break-words">{{ i.value }}</text>
+      <template v-for="(value, key) in productData?.params" :key="key">
+        <view v-if="key in paramsLabel" class="px-4 py-3.5 flex text-sm" style="border-bottom: 1px solid #ccc">
+          <view class="w-[5.5rem] flex-none"><text class="text-[#585858]">{{ paramsLabel[key] }}：</text></view>
+          <view class="flex-1 overflow-hidden">
+            <text class="break-words">{{ value }}</text>
+          </view>
         </view>
-      </view>
+      </template>
     </view>
 
     <view class="w-full py-2.5 px-5">

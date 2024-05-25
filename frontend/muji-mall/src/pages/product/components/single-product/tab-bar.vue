@@ -7,20 +7,20 @@
     <view class="flex justify-between gap-3.5 flex-1">
       <navigator url="/pages/home/home">
         <view class="flex flex-col items-center">
-          <image class="w-5 aspect-[1/1] h-auto" src="../img/home.png" />
+          <image class="w-5 aspect-[1/1] h-auto" src="../../img/home.png" />
           <text class="text-[0.625rem]">店铺</text>
         </view>
       </navigator>
       <view class="flex flex-col items-center">
-        <image class="w-5 aspect-[1/1] h-auto" src="../img/service.png" />
+        <image class="w-5 aspect-[1/1] h-auto" src="../../img/service.png" />
         <text class="text-[0.625rem]">客服</text>
       </view>
 <!--      <view class="flex flex-col items-center">
-        <image class="w-5 aspect-[1/1] h-auto" src="../img/star.png" />
+        <image class="w-5 aspect-[1/1] h-auto" src="../../img/star.png" />
         <text class="text-[0.625rem]">收藏</text>
       </view>-->
       <view class="flex flex-col items-center">
-        <image class="w-5 aspect-[1/1] h-auto" src="../img/car.png" />
+        <image class="w-5 aspect-[1/1] h-auto" src="../../img/car.png" />
         <text class="text-[0.625rem] text-nowrap">购物车</text>
       </view>
     </view>

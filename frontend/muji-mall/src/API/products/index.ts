@@ -6,7 +6,7 @@ const getProductQuery = useQsStringify({
   fields: [],
   populate: {
     spu: {
-      fields: ['title', 'sales'],
+      fields: ['title', 'sales', 'min_list_price', 'max_list_price'],
       populate: {
         cover: {
           fields: ['url']
@@ -28,11 +28,7 @@ const getProductQuery = useQsStringify({
       }
     },
     params: {
-      populate: {
-        other: {
-          fields: '*'
-        }
-      }
+      fields: ['*']
     },
     banner: {
       populate: {
@@ -52,6 +48,8 @@ export type Product = {
     spu: {
       title: string
       sales: string
+      min_list_price: number
+      max_list_price: number
       cover: {
         data: {
           attributes: {
@@ -80,10 +78,12 @@ export type Product = {
       }[]
     }
     params: {
-      other: {
-        key: string
-        value: string
-      }[]
+      gender: string
+      code: string
+      ref: string
+      season: string
+      material: string
+      producer: string
     }
     banner: {
       images: {
@@ -122,22 +122,20 @@ export const getPriceDesc = async (): Promise<StrapiResponse<PriceDesc>> => {
     .then(({ data }) => data)) as StrapiResponse<PriceDesc>
 }
 
-const getProductListQuery = (page: number, pageSize: number, sort: string | string[]) => {
-  return useQsStringify({
+const getProductListQuery = (
+  page: number,
+  pageSize: number,
+  sort: string | string[],
+  filters?: string
+) => {
+  const query: Record<string, any> = {
     fields: ['updatedAt'],
     populate: {
       spu: {
-        fields: ['title', 'sales'],
+        fields: ['title', 'sales', 'min_list_price', 'max_list_price'],
         populate: {
           cover: {
             fields: ['url']
-          }
-        }
-      },
-      sku: {
-        populate: {
-          sku: {
-            fields: ['price']
           }
         }
       }
@@ -147,7 +145,32 @@ const getProductListQuery = (page: number, pageSize: number, sort: string | stri
       pageSize
     },
     sort
-  })
+  }
+
+  if (filters) {
+    query['filters'] = {
+      $or: [
+        {
+          spu: {
+            title: {
+              // 商品名包含
+              $containsi: filters
+            }
+          }
+        },
+        {
+          params: {
+            ref: {
+              // 货号全等
+              $eqi: filters
+            }
+          }
+        }
+      ]
+    }
+  }
+
+  return useQsStringify(query)
 }
 export type ProductList = {
   id: number
@@ -155,6 +178,8 @@ export type ProductList = {
     spu: {
       title: string
       sales: number
+      min_list_price: number
+      max_list_price: number
       cover: {
         data: {
           attributes: {
@@ -163,19 +188,15 @@ export type ProductList = {
         }
       }
     }
-    sku: {
-      sku: {
-        price: number
-      }[]
-    }
   }
 }[]
 export const getProductList = async (
   page: number = 1,
   pageSize: number = 8,
-  sort: string | string[] = ''
+  sort: string | string[] = '',
+  filters?: string
 ) => {
-  const query = getProductListQuery(page, pageSize, sort)
+  const query = getProductListQuery(page, pageSize, sort, filters)
   return (await uni
     .request({
       url: `${SERVER_ADDRESS}/api/products?${query}`

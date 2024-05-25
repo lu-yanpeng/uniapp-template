@@ -20,7 +20,7 @@ export default defineConfig({
       remotes: {
         'remote-app': 'http://localhost:4173/remote-app/assets/remoteEntry.js'
       },
-      shared: ['vue', '@dcloudio/uni-app']
+      // shared: ['vue', '@dcloudio/uni-app']
     })
   ],
   css: {

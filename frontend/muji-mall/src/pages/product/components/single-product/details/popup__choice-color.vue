@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // TODO:如果继续开发，sku字段需要单独设计一张表，以实现一个颜色对应多个尺码
-import { inject, type Ref, ref, onMounted, unref, watch } from 'vue'
+import { inject, type Ref, ref, watch } from 'vue'
 import { productSymbol } from '@/pages/product/symbol-keys'
 import type { Product } from '@/API/products'
 import { SERVER_ADDRESS } from '@/constants'

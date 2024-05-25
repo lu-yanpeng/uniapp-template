@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, computed, unref } from 'vue'
 import type { Ref } from 'vue'
-import { productSymbol } from '../symbol-keys'
+import { productSymbol } from '../../symbol-keys'
 import type { Product } from '@/API/products'
 import { SERVER_ADDRESS } from '@/constants'
 

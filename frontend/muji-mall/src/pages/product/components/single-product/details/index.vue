@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, ref, computed, unref } from 'vue'
+import { inject, ref, computed } from 'vue'
 import type { Ref } from 'vue'
 import { productSymbol } from '@/pages/product/symbol-keys'
 import type { Product } from '@/API/products'
@@ -15,19 +15,16 @@ import { SERVER_ADDRESS } from '@/constants'
 const addressStore = useAddressStore()
 const productData = inject(productSymbol, null) as Ref<Product['attributes'] | null> | null
 const priceRange = computed(() => {
-  if (!unref(productData)) {
-    return '0'
+  if (!productData || !productData.value) {
+    return ''
   }
 
-  const priceSet: Set<number> = new Set()
-  productData?.value?.sku.sku.map((sku) => {
-    priceSet.add(sku.price)
-  })
-  const values = [...priceSet]
-  if (priceSet.size > 1) {
-    return `${Math.min(...values)}~${Math.max(...values)}`
+  const { min_list_price, max_list_price } = productData.value.spu
+  if (min_list_price === max_list_price) {
+    return `${min_list_price}`
+  } else {
+    return `${min_list_price}~${max_list_price}`
   }
-  return `${Math.max(...values)}`
 })
 
 type ChoiceParams = 'choice-size' | 'product-detail'
