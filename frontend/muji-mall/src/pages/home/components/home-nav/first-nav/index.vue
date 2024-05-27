@@ -35,6 +35,12 @@ const navItem: { id: CurrentNav; name: string }[] = [
     name: '视频'
   }
 ]
+
+const onSearch = () => {
+  uni.navigateTo({
+    url: '/pages/product/product?orderBy=spu.sales:desc,createdAt:desc'
+  })
+}
 </script>
 
 <template>
@@ -44,7 +50,7 @@ const navItem: { id: CurrentNav; name: string }[] = [
     :show-scrollbar="false"
     :enable-flex="true"
   >
-    <view class="inline-flex ml-0.5">
+    <view class="inline-flex ml-0.5" @click="onSearch">
       <image src="./img/search.png" class="w-11 h-11" />
     </view>
 
