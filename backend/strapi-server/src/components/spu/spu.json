@@ -27,6 +27,16 @@
         "videos",
         "audios"
       ]
+    },
+    "min_list_price": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "max_list_price": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
     }
   }
 }

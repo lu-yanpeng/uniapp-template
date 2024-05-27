@@ -30,10 +30,10 @@
         "audios"
       ]
     },
-    "campaign_component": {
+    "activity_component": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::campaign-component.campaign-component"
+      "target": "api::activity-component.activity-component"
     }
   }
 }

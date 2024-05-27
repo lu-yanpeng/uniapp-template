@@ -21,6 +21,10 @@
       "type": "string",
       "required": true,
       "unique": true
+    },
+    "desc": {
+      "type": "text",
+      "private": true
     }
   }
 }

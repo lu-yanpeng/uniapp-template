@@ -2,15 +2,29 @@
   "collectionName": "components_parameter_parameters",
   "info": {
     "displayName": "Parameter",
-    "icon": "filter",
     "description": ""
   },
   "options": {},
   "attributes": {
-    "other": {
-      "type": "component",
-      "repeatable": true,
-      "component": "dict.dict"
+    "gender": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string"
+    },
+    "ref": {
+      "type": "string",
+      "required": true,
+      "unique": false
+    },
+    "season": {
+      "type": "string"
+    },
+    "material": {
+      "type": "string"
+    },
+    "producer": {
+      "type": "string"
     }
   }
 }

@@ -86,11 +86,15 @@ export interface ParameterParameter extends Schema.Component {
   collectionName: 'components_parameter_parameters';
   info: {
     displayName: 'Parameter';
-    icon: 'filter';
     description: '';
   };
   attributes: {
-    other: Attribute.Component<'dict.dict', true>;
+    gender: Attribute.String;
+    code: Attribute.String;
+    ref: Attribute.String & Attribute.Required;
+    season: Attribute.String;
+    material: Attribute.String;
+    producer: Attribute.String;
   };
 }
 
@@ -155,6 +159,22 @@ export interface SpuSpu extends Schema.Component {
       > &
       Attribute.DefaultTo<0>;
     cover: Attribute.Media;
+    min_list_price: Attribute.Decimal &
+      Attribute.Required &
+      Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
+    max_list_price: Attribute.Decimal &
+      Attribute.Required &
+      Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
   };
 }
 

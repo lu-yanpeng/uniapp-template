@@ -855,6 +855,7 @@ export interface ApiActivityComponentActivityComponent
   attributes: {
     component_id: Attribute.String & Attribute.Required & Attribute.Unique;
     component_path: Attribute.String & Attribute.Required & Attribute.Unique;
+    desc: Attribute.Text & Attribute.Private;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -888,10 +889,10 @@ export interface ApiCampaignCampaign extends Schema.CollectionType {
     title: Attribute.String & Attribute.DefaultTo<' '>;
     desc: Attribute.String;
     cover_img: Attribute.Media & Attribute.Required;
-    campaign_component: Attribute.Relation<
+    activity_component: Attribute.Relation<
       'api::campaign.campaign',
       'oneToOne',
-      'api::campaign-component.campaign-component'
+      'api::activity-component.activity-component'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -904,39 +905,6 @@ export interface ApiCampaignCampaign extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::campaign.campaign',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiCampaignComponentCampaignComponent
-  extends Schema.CollectionType {
-  collectionName: 'campaign_components';
-  info: {
-    singularName: 'campaign-component';
-    pluralName: 'campaign-components';
-    displayName: 'campaign-component';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    component_id: Attribute.String & Attribute.Required;
-    component_path: Attribute.String & Attribute.Required;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::campaign-component.campaign-component',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::campaign-component.campaign-component',
       'oneToOne',
       'admin::user'
     > &
@@ -1067,7 +1035,6 @@ export interface ApiProductProduct extends Schema.CollectionType {
   };
   attributes: {
     spu: Attribute.Component<'spu.spu'>;
-    params: Attribute.Component<'parameter.parameter'>;
     sku: Attribute.Component<'sku-entry.sku-entry'>;
     banner: Attribute.Component<'banner.banner'>;
     detail: Attribute.RichText;
@@ -1076,6 +1043,7 @@ export interface ApiProductProduct extends Schema.CollectionType {
       'oneToMany',
       'api::category-2.category-2'
     >;
+    params: Attribute.Component<'parameter.parameter'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1147,7 +1115,6 @@ declare module '@strapi/types' {
       'api::activity.activity': ApiActivityActivity;
       'api::activity-component.activity-component': ApiActivityComponentActivityComponent;
       'api::campaign.campaign': ApiCampaignCampaign;
-      'api::campaign-component.campaign-component': ApiCampaignComponentCampaignComponent;
       'api::category-1.category-1': ApiCategory1Category1;
       'api::category-2.category-2': ApiCategory2Category2;
       'api::price-desc.price-desc': ApiPriceDescPriceDesc;

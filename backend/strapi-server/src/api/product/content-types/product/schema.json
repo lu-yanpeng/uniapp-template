@@ -17,11 +17,6 @@
       "repeatable": false,
       "component": "spu.spu"
     },
-    "params": {
-      "type": "component",
-      "repeatable": false,
-      "component": "parameter.parameter"
-    },
     "sku": {
       "type": "component",
       "repeatable": false,
@@ -40,6 +35,12 @@
       "relation": "oneToMany",
       "target": "api::category-2.category-2",
       "mappedBy": "product"
+    },
+    "params": {
+      "displayName": "Parameter",
+      "type": "component",
+      "repeatable": false,
+      "component": "parameter.parameter"
     }
   }
 }
