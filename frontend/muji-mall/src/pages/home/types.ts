@@ -1,1 +1,1 @@
-export type CurrentNav = 'home' | 'a' | 'b' | 'c' | 'd' | 'e'
+export type CurrentNav = 'home' | 'productList' | 'b' | 'c' | 'newProduct' | 'e'

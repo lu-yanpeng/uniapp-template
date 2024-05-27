@@ -20,7 +20,7 @@ onMounted(async () => {
       const { attributes } = item
       campaignsList.value.push({
         title: attributes.title,
-        component_id: attributes.campaign_component.data.attributes.component_id,
+        component_id: attributes.activity_component.data.attributes.component_id,
         imgSrc: SERVER_ADDRESS + attributes.cover_img.data.attributes.url
       })
     })
@@ -28,6 +28,12 @@ onMounted(async () => {
     console.log()
   }
 })
+
+const goto = (componentId: string, title: string) => {
+  uni.navigateTo({
+    url: `/pages/activity/activity?component-id=${componentId}&title=${title}`
+  })
+}
 </script>
 
 <template>
@@ -58,6 +64,7 @@ onMounted(async () => {
         class="w-[10.125rem] h-[7.5rem] mb-3 overflow-hidden card-border lg:w-full lg:h-full lg:mb-0"
         :class="{ 'lg:hidden': key === 5 || key === 4 }"
         style="box-shadow: -2px 2px 6px 2px #ccc"
+        @click="goto(value.component_id, value.title)"
       >
         <image :src="value.imgSrc" class="w-full h-full" mode="aspectFill" :lazy-load="true" />
       </view>

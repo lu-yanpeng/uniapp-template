@@ -32,7 +32,7 @@ export type BannerData = {
         id: number
         attributes: {
           component_id: string
-          component_name: string
+          component_path: string
         }
       }
     }

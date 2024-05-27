@@ -3,7 +3,7 @@ import { onMounted, ref, computed } from 'vue'
 import AsideTitle from '@/components/aside-title/index.vue'
 import { getProductList } from '@/API/products'
 import { SERVER_ADDRESS } from '@/constants'
-import type { Order } from '@/pages/product/types'
+import type { Order } from '@/components/product-list-and-sort/types'
 import CommonProductList from '@/components/product-list/index.vue'
 import type { Products } from '@/components/product-list/types'
 

@@ -1,75 +1,28 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
-import type { Order } from '@/pages/product/types'
-import { getProductList as apiGetProductList } from '@/API/products/index'
-import CommonProductList from '@/components/product-list/index.vue'
-import type { Products } from '@/components/product-list/types'
-import { SERVER_ADDRESS } from '@/constants'
+import { ref } from 'vue'
+import type { Order } from '@/components/product-list-and-sort/types'
+import CompProductListAndSort from '@/components/product-list-and-sort/index.vue'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     orderBy: Order
   }>(),
   {}
 )
 
-const productsData = ref<Products>([])
-const getProductsData = async (page: number, filters?: string) => {
-  productsData.value = []
-  const { data } = await apiGetProductList(page, 20, currentActive.value.split(','), filters)
-
-  data.map(({ attributes: { spu }, id }) => {
-    productsData.value.push({
-      id,
-      title: spu.title,
-      sales: spu.sales,
-      coverSrc: SERVER_ADDRESS + spu.cover.data.attributes.url,
-      min_list_price: spu.min_list_price,
-      max_list_price: spu.max_list_price
-    })
-  })
-}
-onMounted(async () => {
-  await getProductsData(1)
-})
-
+const productListRef = ref<InstanceType<typeof CompProductListAndSort> | null>(null)
 const goBack = () => {
   uni.navigateBack()
 }
 
 const searchName = ref('')
 const searchProduct = async () => {
-  await getProductsData(1, searchName.value)
+  await productListRef.value?.getProductsData(1, searchName.value)
 }
-
-// 根据它的值对请求数据进行排序，还会激活对应的项目样式，比如按销量排序，按价格排序
-const currentActive = ref<Order>(props.orderBy)
-// 价格是正序还是倒序
-const priceOrder = ref<'asc' | 'desc' | null>(null)
-const orderByPrice = () => {
-  if (currentActive.value === 'spu.min_list_price') {
-    currentActive.value = 'spu.max_list_price:desc'
-    priceOrder.value = 'desc'
-  } else {
-    currentActive.value = 'spu.min_list_price'
-    priceOrder.value = 'asc'
-  }
-}
-// 点击时，按照排序请求商品数据
-const orderByItem = (sort: Order) => {
-  currentActive.value = sort
-  priceOrder.value = null
-}
-watch(
-  () => currentActive.value,
-  async () => {
-    await getProductsData(1)
-  }
-)
 </script>
 
 <template>
-  <view class="grid [grid-template-rows:auto_auto_1fr] h-screen">
+  <view class="h-screen">
     <view class="h-[44px] flex items-center [padding:0_3px]">
       <view class="uni-page-head-hd" @click="goBack">
         <view class="uni-page-head-btn">
@@ -113,63 +66,10 @@ watch(
       >
     </view>
 
-    <view
-      class="flex justify-around [border-top:1px_solid_#f2f2f2] [border-bottom:1px_solid_#f2f2f2] text-[#0b333c]"
-    >
-      <view
-        @click="orderByItem('spu.sales:desc,createdAt:desc')"
-        class="px-5 py-3 text-sm"
-        :class="{ 'current-active-style': currentActive === 'spu.sales:desc,createdAt:desc' }"
-        >综合</view
-      >
-      <view
-        @click="orderByItem('spu.sales:desc')"
-        class="px-5 py-3 text-sm"
-        :class="{ 'current-active-style': currentActive === 'spu.sales:desc' }"
-        >销量</view
-      >
-      <view
-        @click="orderByItem('createdAt:desc')"
-        class="px-5 py-3 text-sm"
-        :class="{ 'current-active-style': currentActive === 'createdAt:desc' }"
-        >上新</view
-      >
-      <view
-        @click="orderByPrice"
-        class="px-5 py-3 text-sm sort sort-image"
-        :class="{
-          'current-active-style':
-            currentActive === 'spu.min_list_price' || currentActive === 'spu.max_list_price:desc',
-          'sort-asc-image': priceOrder === 'asc',
-          'sort-desc-image': priceOrder === 'desc'
-        }"
-        >价格</view
-      >
-    </view>
-
-    <scroll-view class="overflow-y-scroll h-full" :scroll-y="true" :show-scrollbar="false">
-      <common-product-list class="py-4" :products="productsData" />
-    </scroll-view>
+    <comp-product-list-and-sort
+      ref="productListRef"
+      class="[height:calc(100vh-44px)]"
+      :order-by="orderBy"
+    />
   </view>
 </template>
-
-<style scoped>
-.current-active-style {
-  color: #7f0019;
-}
-.sort {
-  background-size: 0.5625rem 1.125rem;
-  background-position-x: 90%;
-  background-position-y: center;
-  background-repeat: no-repeat;
-}
-.sort.sort-image {
-  background-image: url('@/pages/product/img/sort.png');
-}
-.sort.sort-asc-image {
-  background-image: url('@/pages/product/img/sort-asc.png');
-}
-.sort.sort-desc-image {
-  background-image: url('@/pages/product/img/sort-desc.png');
-}
-</style>

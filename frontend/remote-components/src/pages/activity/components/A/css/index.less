@@ -1,0 +1,26 @@
+/*
+https://uniapp.dcloud.net.cn/tutorial/syntax-css.html#%E5%85%A8%E5%B1%80%E6%A0%B7%E5%BC%8F%E4%B8%8E%E5%B1%80%E9%83%A8%E6%A0%B7%E5%BC%8F
+uniapp中，组件的样式都只能在当前组件中生效，即使不加scoped，它渲染出来的html也会自动加上data-v，用来隔离样式
+可以从外部导入css，这样它可以作用于全局
+在远程组件中，因为本机组件无法生成对应的data-v属性，所以加了scoped的样式在本机不生效。就是远程组件的data-v和本地组件的data-v不一致
+*/
+.remote-app {
+  ._container > img {
+    object-fit: cover;
+  }
+  .py_20 {
+    padding: 20px 0;
+  }
+  .w_full {
+    width: 100%;
+  }
+  .h_full {
+    height: 100%;
+  }
+  .align_top {
+    vertical-align: top;
+  }
+  .w_50 {
+    width: 50%;
+  }
+}

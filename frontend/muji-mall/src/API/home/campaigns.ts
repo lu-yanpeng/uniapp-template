@@ -3,21 +3,24 @@ import { SERVER_ADDRESS } from '@/constants'
 import type { StrapiResponse } from '@/types/strapi'
 import { useQsStringify } from '@/hooks/commonTool'
 
-const getCampaignsQuery = useQsStringify({
-  fields: ['title'],
-  populate: {
-    cover_img: {
-      fields: ['url']
+const getCampaignsQuery = (sort: string | string[]) => {
+  return useQsStringify({
+    fields: ['title'],
+    populate: {
+      cover_img: {
+        fields: ['url']
+      },
+      activity_component: {
+        fields: ['component_id', 'component_path']
+      }
     },
-    campaign_component: {
-      fields: ['component_id', 'component_path']
-    }
-  },
-  pagination: {
-    page: 1,
-    pageSize: 6
-  }
-})
+    pagination: {
+      page: 1,
+      pageSize: 6
+    },
+    sort
+  })
+}
 export type CampaignsData = {
   id: number
   attributes: {
@@ -31,19 +34,20 @@ export type CampaignsData = {
         }
       }
     }
-    campaign_component: {
+    activity_component: {
       data: {
         id: number
         attributes: {
           component_id: string
-          component_name: string
+          component_path: string
         }
       }
     }
   }
 }[]
-export const getCampaigns = async (): Promise<StrapiResponse<CampaignsData>> => {
+export const getCampaigns = async (sort: string | string[] = ['createdAt:desc']): Promise<StrapiResponse<CampaignsData>> => {
+  const query = getCampaignsQuery(sort)
   return await uni.request({
-    url: `${SERVER_ADDRESS}/api/campaigns?${getCampaignsQuery}`
+    url: `${SERVER_ADDRESS}/api/campaigns?${query}`
   }).then(({ data }) => data) as StrapiResponse<CampaignsData>
 }

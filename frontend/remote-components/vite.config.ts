@@ -26,7 +26,7 @@ if (process.env.UNI_PLATFORM === 'h5') {
         './activity': './src/pages/activity/activity.vue',
       },
       // 如果打包 '@dcloudio/uni-h5' 页面无法显示，也不报错
-      shared: ['vue', '@dcloudio/uni-app']
+      // shared: ['vue', '@dcloudio/uni-app']
     })
   )
 }
@@ -41,5 +41,5 @@ export default defineConfig({
   build: {
     target: 'esnext'
   },
-  base: '/remote-app/'
+  // base: '/remote-app/'
 })

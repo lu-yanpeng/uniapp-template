@@ -9,17 +9,21 @@ const componentId = ref<string | null>(null)
 // @ts-ignore
 onLoad((query: {
   title: string
-  componentId: string
+  'component-id': string
 }) => {
   uni.setNavigationBarTitle({
     title: query.title
   })
-  componentId.value = query.componentId
+  componentId.value = query['component-id']
 })
+
+const mounted = () => {
+  console.log('挂载')
+}
 </script>
 
 <template>
   <view>
-    <activity :componentId="componentId"  />
+    <activity @mounted="mounted" v-if="componentId" :component-id="componentId" />
   </view>
 </template>

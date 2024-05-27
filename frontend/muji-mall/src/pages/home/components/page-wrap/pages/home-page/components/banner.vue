@@ -6,7 +6,7 @@ import { SERVER_ADDRESS } from '@/constants'
 const bannerList = ref<
   {
     title: string
-    component_id: string
+    componentId: string
     imgSrc: string
   }[]
 >([])
@@ -18,7 +18,7 @@ onMounted(async () => {
       const { attributes } = item
       bannerList.value.push({
         title: attributes.title,
-        component_id: attributes.activity_component.data.attributes.component_id,
+        componentId: attributes.activity_component.data.attributes.component_id,
         imgSrc: SERVER_ADDRESS + attributes.cover_img.data.attributes.url
       })
     })
@@ -41,7 +41,7 @@ onMounted(async () => {
       <swiper-item v-for="(value, key) in bannerList" :key="key">
         <navigator
           class="w-full h-full"
-          :url="`/pages/activity/activity?componentId=${value.component_id}&title=${value.title}`"
+          :url="`/pages/activity/activity?component-id=${value.componentId}&title=${value.title}`"
         >
           <image :src="value.imgSrc" class="w-full h-full" mode="aspectFill" :lazy-load="true" />
         </navigator>

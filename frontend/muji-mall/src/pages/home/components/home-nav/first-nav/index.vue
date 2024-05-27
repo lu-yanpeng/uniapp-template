@@ -15,7 +15,7 @@ const navItem: { id: CurrentNav; name: string }[] = [
     name: '首页'
   },
   {
-    id: 'a',
+    id: 'productList',
     name: '全部商品'
   },
   {
@@ -27,7 +27,7 @@ const navItem: { id: CurrentNav; name: string }[] = [
     name: '良品榜单'
   },
   {
-    id: 'd',
+    id: 'newProduct',
     name: '新商品'
   },
   {

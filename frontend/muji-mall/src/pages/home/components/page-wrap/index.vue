@@ -19,6 +19,8 @@ import { defineAsyncComponent } from 'vue'
 // @ts-ignore
 // eslint-disable-next-line no-redeclare, no-import-assign
 const HomePage = defineAsyncComponent(() => import('./pages/home-page/index.vue'))
+const CompProductList = defineAsyncComponent(() => import('./pages/product-list/index.vue'))
+const CompNewProduct = defineAsyncComponent(() => import('./pages/new-product/index.vue'))
 // @ts-ignore
 // eslint-disable-next-line no-redeclare, no-import-assign
 const OtherPage = defineAsyncComponent(() => import('./pages/other-page/index.vue'))
@@ -32,6 +34,8 @@ const currentNav = inject(currentNavSymbol) as Ref<CurrentNav>
     <!-- #ifdef WEB -->
     <keep-alive>
       <home-page v-if="currentNav === 'home'" />
+      <comp-product-list v-else-if="currentNav === 'productList'" />
+      <comp-new-product v-else-if="currentNav === 'newProduct'" />
       <other-page v-else />
     </keep-alive>
     <!-- #endif -->
