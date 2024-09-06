@@ -185,7 +185,7 @@ export type ProductList = {
           attributes: {
             url: string
           }
-        }
+        } | null
       }
     }
   }

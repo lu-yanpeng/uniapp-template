@@ -1,22 +1,32 @@
 import { defineStore } from 'pinia'
-import { login as apiLogin } from '@/API/user'
+import { ref } from 'vue'
+import { login as apiLogin, verifyMe as apiVerifyMe } from '@/API/user'
 
 export const useUserStore = defineStore('user', () => {
   const USER_KEY = 'muji-mall-user'
-  const login = async (userInfo: { username: string; password: string }) => {
+  type UserInfo = {
+    id: number
+    username: string
+    email: string
+    jwt: string
+  } | null
+  const userInfo = ref<UserInfo>(null)
+  if (localStorage.getItem(USER_KEY)) {
+    userInfo.value = JSON.parse(localStorage.getItem(USER_KEY) as string) as UserInfo
+  }
+
+  const login = async (_userInfo: { username: string; password: string }) => {
     try {
-      const result = await apiLogin(userInfo)
+      const result = await apiLogin(_userInfo)
       if ('jwt' in result) {
         const { user } = result
-        localStorage.setItem(
-          USER_KEY,
-          JSON.stringify({
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            jwt: result.jwt
-          })
-        )
+        userInfo.value = {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          jwt: result.jwt
+        }
+        localStorage.setItem(USER_KEY, JSON.stringify(userInfo.value))
         return true
       }
       return false
@@ -28,10 +38,32 @@ export const useUserStore = defineStore('user', () => {
 
   const logout = () => {
     localStorage.removeItem(USER_KEY)
+    userInfo.value = null
+  }
+
+  const verifyMe = async () => {
+    try {
+      if (!userInfo.value) {
+        logout()
+        return false
+      }
+      const result = await apiVerifyMe(userInfo.value.jwt)
+      if (!('id' in result)) {
+        logout()
+        return false
+      }
+      return true
+    } catch (e) {
+      logout()
+      console.log('登录失败 me')
+      return false
+    }
   }
 
   return {
     login,
-    logout
+    logout,
+    userInfo,
+    verifyMe
   }
 })

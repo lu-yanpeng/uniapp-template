@@ -39,6 +39,7 @@ const signIn = async () => {
     })
     if (result) {
       success({ msg: '登录成功' })
+      await uni.navigateBack()
     } else {
       error({ msg: '用户名密码错误' })
     }
@@ -61,6 +62,7 @@ const quickLogin = async (flag: 1 | 2) => {
     const result = await userStore.login(userInfo)
     if (result) {
       success({ msg: '登录成功' })
+      await uni.navigateBack()
     } else {
       error({ msg: '用户名密码错误' })
     }
@@ -74,7 +76,7 @@ const quickLogin = async (flag: 1 | 2) => {
   <wd-form ref="formRef" :model="model">
     <wd-cell-group border>
       <wd-input
-        label="手机号"
+        label="用户名"
         label-width="4.625rem"
         prop="username"
         clearable

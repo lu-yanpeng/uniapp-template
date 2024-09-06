@@ -28,3 +28,14 @@ export const login = async (userInfo: { username: string; password: string }) =>
     })
     .then(({ data }) => data)) as Success | Fail
 }
+
+export const verifyMe = async (jwt: string) => {
+  return (await uni
+    .request({
+      url: `${SERVER_ADDRESS}/api/users/me`,
+      header: {
+        Authorization: `Bearer ${jwt}`
+      }
+    })
+    .then(({ data }) => data)) as Success['user'] | Fail
+}
