@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_cart_list_cart_lists",
+  "info": {
+    "displayName": "cart-list"
+  },
+  "options": {},
+  "attributes": {
+    "product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product.product"
+    },
+    "count": {
+      "type": "integer",
+      "min": 1,
+      "required": true
+    }
+  }
+}
