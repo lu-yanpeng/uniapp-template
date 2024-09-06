@@ -36,6 +36,15 @@ export default defineConfig(({ mode }) => {
     build: {
       target: 'esnext'
     },
-    // base: '/host-app/'
+    // base: '/host-app/',
+    // 开发时使用
+    server: {
+      proxy: {
+        '/api': {
+          target: 'http://localhost:1337',
+          changeOrigin: true,
+        }
+      }
+    }
   }
 })
