@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { useUserStore } from '@/store/user'
-import { isAuth } from '@/hooks/auth'
 
 const userStore = useUserStore()
-isAuth()
 
 const gotoLogin = () => {
   uni.navigateTo({
@@ -13,12 +11,19 @@ const gotoLogin = () => {
 </script>
 
 <template>
-  <view>
-    <view v-if="userStore.userInfo">
+  <view class="h-[calc(100vh-50px)]">
+    <view v-if="userStore.userInfo" class="h-full">
       <slot />
     </view>
-    <view v-else>
-      <view>请先<text class="text-cyan-300" @click="gotoLogin">登录</text></view>
+    <view v-else class="h-full flex items-center justify-center">
+      <view class="text-sm">
+        <view class="text-slate-500 text-center mb-1">请先登录</view>
+        <view
+          @click="gotoLogin"
+          class="w-[120px] h-[36px] border border-[#ccc] border-solid rounded-full flex items-center justify-center"
+        >立即登录</view
+        >
+      </view>
     </view>
   </view>
 </template>
