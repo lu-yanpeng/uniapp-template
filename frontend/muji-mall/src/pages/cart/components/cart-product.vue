@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { getProduct, type Product } from '@/API/products'
 import ChooseSize from '@/components/choose-size/index.vue'
 import { SERVER_ADDRESS } from '@/constants'
+import LoadingComp from '@/components/loading/index.vue'
 
 const count = ref(0)
 const loading = ref(false)
@@ -79,11 +80,7 @@ const onSubmit = (args: {
       </view>
     </view>
 
-    <wd-overlay :show="loading">
-      <view class="wrapper">
-        <wd-loading :size="40" />
-      </view>
-    </wd-overlay>
+    <loading-comp :show="loading" />
 
     <choose-size
       v-model:show="show"
@@ -95,12 +92,3 @@ const onSubmit = (args: {
     />
   </view>
 </template>
-
-<style scoped lang="less">
-.wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-</style>

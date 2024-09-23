@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useToast } from 'wot-design-uni'
 import type { FormInstance } from 'wot-design-uni/components/wd-form/types'
 import { useUserStore } from '@/store/user'
+import Loading from '@/components/loading/index.vue'
 
 const model = ref<{
   username: string
@@ -112,19 +113,6 @@ const quickLogin = async (flag: 1 | 2) => {
     </view>
 
     <wd-toast />
-    <wd-overlay :show="showOverlay">
-      <view class="wrapper">
-        <wd-loading :size="40" />
-      </view>
-    </wd-overlay>
+    <loading :show="showOverlay" />
   </wd-form>
 </template>
-
-<style scoped lang="less">
-.wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-</style>

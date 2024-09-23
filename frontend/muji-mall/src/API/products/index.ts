@@ -44,6 +44,7 @@ const getProductQuery = useQsStringify({
   }
 })
 export type Product = {
+  id: number
   attributes: {
     spu: {
       title: string

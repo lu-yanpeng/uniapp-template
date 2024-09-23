@@ -6,6 +6,8 @@ export const addCart = async (params: {
   quantity: number
   user: number
   product: number
+  color: number
+  size: number
 }) => {
   return uni.request({
     method: 'POST',
@@ -13,6 +15,8 @@ export const addCart = async (params: {
     data: {
       data: {
         quantity: params.quantity,
+        color: params.color,
+        size: params.size,
         user: {
           set: [params.user]
         },

@@ -19,22 +19,27 @@ const addCart = async () => {
     url: '/pages/login/login'
   })
 }
+
+const goCart = () => {
+  uni.switchTab({url: '/pages/cart/cart'})
+}
+const goHome = () => {
+  uni.switchTab({url: '/pages/home/home'})
+}
 </script>
 
 <template>
   <view class="h-[3.15rem] [border-top:1px_solid_#e5e5e5] flex justify-between items-center px-3.5 gap-x-6">
     <view class="flex justify-between gap-3.5 flex-1">
-      <navigator url="/pages/home/home">
-        <view class="flex flex-col items-center">
-          <image class="w-5 aspect-[1/1] h-auto" src="../../img/home.png" />
-          <text class="text-[0.625rem]">店铺</text>
-        </view>
-      </navigator>
+      <view class="flex flex-col items-center" @click="goHome">
+        <image class="w-5 aspect-[1/1] h-auto" src="../../img/home.png" />
+        <text class="text-[0.625rem]">店铺</text>
+      </view>
       <view class="flex flex-col items-center">
         <image class="w-5 aspect-[1/1] h-auto" src="../../img/service.png" />
         <text class="text-[0.625rem]">客服</text>
       </view>
-      <view class="flex flex-col items-center">
+      <view class="flex flex-col items-center" @click="goCart">
         <image class="w-5 aspect-[1/1] h-auto" src="../../img/car.png" />
         <text class="text-[0.625rem] text-nowrap">购物车</text>
       </view>

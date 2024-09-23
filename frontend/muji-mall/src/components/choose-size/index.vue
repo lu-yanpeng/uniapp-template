@@ -4,8 +4,10 @@ import { ref, watch } from 'vue'
 import { SERVER_ADDRESS } from '@/constants'
 import type { Product } from '@/API/products'
 import { useToast } from 'wot-design-uni'
+import { useUserStore } from '@/store/user'
 
 const toast = useToast()
+const userStore = useUserStore()
 
 const props = withDefaults(
   defineProps<{
@@ -31,7 +33,7 @@ type SubmitArgs = {
 const emits = defineEmits<{
   close: [args: SubmitArgs]
   'update:show': [state: boolean]
-  submit: [args: SubmitArgs]
+  submit: [args: SubmitArgs, (value: (boolean | PromiseLike<boolean>)) => void]
 }>()
 
 const visible = ref(false)
@@ -47,53 +49,56 @@ const sku = new Map<number, Product['attributes']['sku']['sku'][number]>()
 const sku_color = new Map<number, Product['attributes']['sku']['color'][number]>()
 
 // 每次打开前初始化数据
-watch(() => props.show, (v) => {
-  if (v) {
-    visible.value = true
-    console.log(props.data)
-    productCount.value = props.count
-    currentColorIndex.value = props.colorIndex
-    currentSizeIndex.value = props.sizeIndex
+watch(
+  () => props.show,
+  (v) => {
+    if (v) {
+      visible.value = true
+      console.log(props.data)
+      productCount.value = props.count
+      currentColorIndex.value = props.colorIndex
+      currentSizeIndex.value = props.sizeIndex
 
-    const productData = props.data
-    if (productData) {
-      productData.sku?.sku.map((v) => {
-        sku.set(v.id, v)
-      })
-      productData.sku?.color.map((v) => {
-        sku_color.set(v.id, v)
-      })
-      // 未选择商品颜色时设置默认封面
-      if (props.colorIndex === -1) {
-        currentColorImageUrl.value = SERVER_ADDRESS + productData?.spu.cover.data.attributes.url
-      } else {
-        const __col = sku_color.get(props.colorIndex)
-        // @ts-ignore
-        currentColorImageUrl.value = SERVER_ADDRESS + __col.cover.data.attributes.url
-        currentColor.value = __col?.name as string
+      const productData = props.data
+      if (productData) {
+        productData.sku?.sku.map((v) => {
+          sku.set(v.id, v)
+        })
+        productData.sku?.color.map((v) => {
+          sku_color.set(v.id, v)
+        })
+        // 未选择商品颜色时设置默认封面
+        if (props.colorIndex === -1) {
+          currentColorImageUrl.value = SERVER_ADDRESS + productData?.spu.cover.data.attributes.url
+        } else {
+          const __col = sku_color.get(props.colorIndex)
+          // @ts-ignore
+          currentColorImageUrl.value = SERVER_ADDRESS + __col.cover.data.attributes.url
+          currentColor.value = __col?.name as string
+        }
+        // 未选择尺寸时设置默认价格
+        if (props.sizeIndex === -1) {
+          const spu = productData.spu
+          currentPrice.value = `${spu.min_list_price}~${spu.max_list_price}`
+        } else {
+          const __sku = sku.get(props.sizeIndex)
+          currentPrice.value = String(__sku?.price)
+          currentSize.value = __sku?.size as string
+        }
       }
-      // 未选择尺寸时设置默认价格
-      if (props.sizeIndex === -1) {
-        const spu = productData.spu
-        currentPrice.value = `${spu.min_list_price}~${spu.max_list_price}`
-      } else {
-        const __sku = sku.get(props.sizeIndex)
-        currentPrice.value = String(__sku?.price)
-        currentSize.value = __sku?.size as string
-      }
+      return
     }
-    return
+    setTimeout(() => {
+      productCount.value = 1
+      currentColorIndex.value = -1
+      currentSizeIndex.value = -1
+      currentPrice.value = 'infinity'
+      currentSize.value = ''
+      currentColor.value = ''
+      sku.clear()
+    }, 200)
   }
-  setTimeout(() => {
-    productCount.value = 1
-    currentColorIndex.value = -1
-    currentSizeIndex.value = -1
-    currentPrice.value = 'infinity'
-    currentSize.value = ''
-    currentColor.value = ''
-    sku.clear()
-  }, 200)
-})
+)
 
 const onClose = () => {
   emits('close', {
@@ -104,7 +109,7 @@ const onClose = () => {
   visible.value = false
   emits('update:show', false)
 }
-const onSubmit = () => {
+const onSubmit = async () => {
   if (currentSizeIndex.value === -1) {
     toast.show('请选择尺寸')
     return
@@ -113,12 +118,27 @@ const onSubmit = () => {
     toast.show('请选择颜色')
     return
   }
-  onClose()
-  emits('submit', {
-    color: currentColorIndex.value,
-    size: currentSizeIndex.value,
-    count: productCount.value
+  if (!userStore.userInfo) {
+    toast.warning('请先登录')
+    await uni.navigateTo({
+      url: '/pages/login/login'
+    })
+    return
+  }
+  const result = await new Promise<boolean>((resolve) => {
+    emits(
+      'submit',
+      {
+        color: currentColorIndex.value,
+        size: currentSizeIndex.value,
+        count: productCount.value
+      },
+      resolve
+    )
   })
+  if (result) {
+    onClose()
+  }
 }
 
 const currentColorImageUrl = ref<string>('')
@@ -179,7 +199,7 @@ const choiceSize = (skuObj: {
           <image class="aspect-[1/1] w-[5.5rem] h-auto" :src="currentColorImageUrl" />
           <view class="flex-1 overflow-hidden font-bold">
             <view
-            ><text class="text-base text-[#7f0019]">{{ currentPrice }}</text></view
+              ><text class="text-base text-[#7f0019]">{{ currentPrice }}</text></view
             >
             <view class="pt-1 pb-2.5"><text class="text-xs text-[#585858]">库存2件</text></view>
             <view class="flex text-xs text-[#a0a0a0]">
@@ -273,7 +293,7 @@ const choiceSize = (skuObj: {
         <view
           @click="onSubmit"
           class="text-base py-1.5 text-white bg-black rounded-full text-center"
-        >确定</view
+          >确定</view
         >
       </view>
     </view>
