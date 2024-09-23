@@ -60,12 +60,14 @@ export type Product = {
     }
     sku: {
       sku: {
+        id: number
         size: string
         color: string
         inventory: number
         price: number
       }[]
       color: {
+        id: number
         uid: string
         name: string
         cover: {

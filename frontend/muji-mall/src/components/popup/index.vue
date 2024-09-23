@@ -29,7 +29,8 @@ const onClose = () => {
     v-model="show"
     position="bottom"
     custom-style="border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;"
-    @close="onClose"
+    @after-leave="onClose"
+    :z-index="1000"
   >
     <slot />
   </wd-popup>

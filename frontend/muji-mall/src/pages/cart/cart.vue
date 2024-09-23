@@ -7,7 +7,7 @@ import CartProduct from './components/cart-product.vue'
   <sign-in>
     <view class="bg-[#f2f2f2] h-full grid [grid-template-rows:1fr_50px]">
       <view class="overflow-y-auto">
-        <cart-product v-if="true"></cart-product>
+        <cart-product v-if="true" />
 
         <view v-else class="fixed top-[45%] left-1/2 [transform:translate(-50%,-50%)] flex items-center text-[#585858] text-sm">
           <view class="w-[21px] h-[1px] bg-[#585858]"></view>

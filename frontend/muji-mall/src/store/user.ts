@@ -9,11 +9,9 @@ export const useUserStore = defineStore('user', () => {
     username: string
     email: string
     jwt: string
-  } | null
-  const userInfo = ref<UserInfo>(null)
-  if (localStorage.getItem(USER_KEY)) {
-    userInfo.value = JSON.parse(localStorage.getItem(USER_KEY) as string) as UserInfo
   }
+  const userInfo = ref<UserInfo | null>(null)
+  userInfo.value = JSON.parse(localStorage.getItem(USER_KEY) as string) as UserInfo
 
   const login = async (_userInfo: { username: string; password: string }) => {
     try {

@@ -6,6 +6,7 @@ import ProductTabBar from './tab-bar.vue'
 import { onMounted, provide, readonly, ref } from 'vue'
 import { getProduct, type Product } from '@/API/products'
 import { productSymbol } from '@/pages/product/symbol-keys'
+import ChooseSize from '@/components/choose-size/index.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -27,6 +28,22 @@ onMounted(async () => {
 
 const goBack = () => {
   uni.navigateBack()
+}
+
+const visibleCart = ref(false)
+const count = ref(1)
+const sizeIndex = ref(-1)
+const colorIndex = ref(-1)
+
+const addCart = () => {
+  visibleCart.value = true
+}
+
+// 关闭选择颜色的窗口后保存之前选择的颜色数据
+const onClose = (args: { color: number; size: number; count: number }) => {
+  count.value = args.count
+  colorIndex.value = args.color
+  sizeIndex.value = args.size
 }
 </script>
 
@@ -63,13 +80,21 @@ const goBack = () => {
       >
         <view>
           <product-banner />
-          <product-details />
+          <product-details @add-cart="addCart" />
           <product-main />
         </view>
       </scroll-view>
 
-      <product-tab-bar />
+      <product-tab-bar @add-cart="addCart" />
     </view>
+
+    <choose-size
+      v-model:show="visibleCart"
+      :data="productData"
+      :count="count"
+      :size-index="sizeIndex"
+      :color-index="colorIndex"
+      @close="onClose"
+    />
   </view>
 </template>
-

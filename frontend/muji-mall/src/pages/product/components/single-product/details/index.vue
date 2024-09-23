@@ -6,11 +6,14 @@ import type { Product } from '@/API/products'
 import { useAddressStore } from '@/store/address'
 import Choice from './choice.vue'
 import SetAddressComps from '@/components/set-address/index.vue'
-import Popup from './popup__.vue'
-import PopupChoiceColor from './popup__choice-color.vue'
+import Popup from '@/components/popup/index.vue'
 import PopupProductDetail from './popup__product-detail.vue'
 import Recommend from './recommend.vue'
 import { SERVER_ADDRESS } from '@/constants'
+
+defineEmits<{
+  addCart: []
+}>()
 
 const addressStore = useAddressStore()
 const productData = inject(productSymbol, null) as Ref<Product['attributes'] | null> | null
@@ -27,13 +30,7 @@ const priceRange = computed(() => {
   }
 })
 
-type ChoiceParams = 'choice-size' | 'product-detail'
 const show = ref<boolean>(false)
-const currentPopup = ref<ChoiceParams | null>(null)
-const openPopup = (choice: ChoiceParams) => {
-  show.value = true
-  currentPopup.value = choice
-}
 
 const addressShow = ref<boolean>(false)
 </script>
@@ -66,11 +63,11 @@ const addressShow = ref<boolean>(false)
     <!-- 尺码 -->
     <view class="py-4" style="border-top: 1px solid #f2f2f2">
       <view class="px-[1.125rem]">
-        <choice label="选择" @choice="openPopup('choice-size')">
+        <choice label="选择" @choice="$emit('addCart')">
           <text>选择尺码 颜色</text>
         </choice>
 
-        <view @click="openPopup('choice-size')" class="flex pl-[3.125rem] items-center h-10">
+        <view @click="show = true" class="flex pl-[3.125rem] items-center h-10">
           <view class="flex-1 overflow-hidden">
             <scroll-view
               class="flex whitespace-nowrap"
@@ -100,19 +97,14 @@ const addressShow = ref<boolean>(false)
     </view>
     <!-- 参数 -->
     <view class="py-4" style="border-top: 1px solid #f2f2f2">
-      <choice label="产品参数" class="px-[1.125rem]" @choice="openPopup('product-detail')" />
+      <choice label="产品参数" class="px-[1.125rem]" @choice="show = true" />
     </view>
     <!-- 推荐商品 -->
     <recommend />
 
-    <!-- 弹出框，设置颜色，查看产品参数 -->
+    <!-- 弹出框，查看产品参数 -->
     <popup v-model="show">
-      <popup-choice-color
-        v-show="currentPopup === 'choice-size'"
-        @submit="show = false"
-        :price-range="priceRange"
-      />
-      <popup-product-detail v-show="currentPopup === 'product-detail'" @submit="show = false" />
+      <popup-product-detail @submit="show = false" />
     </popup>
 
     <!-- 弹出框，设置地址 -->
