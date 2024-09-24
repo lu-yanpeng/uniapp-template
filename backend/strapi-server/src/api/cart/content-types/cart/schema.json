@@ -27,6 +27,14 @@
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "carts"
+    },
+    "color": {
+      "type": "integer",
+      "required": true
+    },
+    "size": {
+      "type": "integer",
+      "required": true
     }
   }
 }

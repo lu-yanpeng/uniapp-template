@@ -54,7 +54,6 @@ watch(
   (v) => {
     if (v) {
       visible.value = true
-      console.log(props.data)
       productCount.value = props.count
       currentColorIndex.value = props.colorIndex
       currentSizeIndex.value = props.sizeIndex

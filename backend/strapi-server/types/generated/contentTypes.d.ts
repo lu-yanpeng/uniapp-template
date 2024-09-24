@@ -946,6 +946,8 @@ export interface ApiCartCart extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
+    color: Attribute.Integer & Attribute.Required;
+    size: Attribute.Integer & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::cart.cart', 'oneToOne', 'admin::user'> &
