@@ -16,19 +16,22 @@ const props = withDefaults(
     count: number
     sizeIndex: number
     colorIndex: number
+    cartId: number
   }>(),
   {
     show: false,
     data: null,
     count: 1,
     sizeIndex: -1,
-    colorIndex: -1
+    colorIndex: -1,
+    cartId: -1
   }
 )
 type SubmitArgs = {
   color: number
   size: number
   count: number
+  cartId: number
 }
 const emits = defineEmits<{
   close: [args: SubmitArgs]
@@ -47,6 +50,8 @@ const currentColor = ref('')
 
 const sku = new Map<number, Product['attributes']['sku']['sku'][number]>()
 const sku_color = new Map<number, Product['attributes']['sku']['color'][number]>()
+// 用来判断当前数据是否有修改
+const originalData = ref('')
 
 // 每次打开前初始化数据
 watch(
@@ -57,6 +62,11 @@ watch(
       productCount.value = props.count
       currentColorIndex.value = props.colorIndex
       currentSizeIndex.value = props.sizeIndex
+      originalData.value = JSON.stringify({
+        color: currentColorIndex.value,
+        size: currentSizeIndex.value,
+        count: productCount.value,
+      })
 
       const productData = props.data
       if (productData) {
@@ -94,6 +104,7 @@ watch(
       currentPrice.value = 'infinity'
       currentSize.value = ''
       currentColor.value = ''
+      originalData.value = ''
       sku.clear()
     }, 200)
   }
@@ -103,7 +114,8 @@ const onClose = () => {
   emits('close', {
     color: currentColorIndex.value,
     size: currentSizeIndex.value,
-    count: productCount.value
+    count: productCount.value,
+    cartId: props.cartId
   })
   visible.value = false
   emits('update:show', false)
@@ -124,13 +136,26 @@ const onSubmit = async () => {
     })
     return
   }
+
+  // 如果没有修改数据，直接关闭弹窗
+  const currentData = JSON.stringify({
+    color: currentColorIndex.value,
+    size: currentSizeIndex.value,
+    count: productCount.value,
+  })
+  if (originalData.value === currentData) {
+    onClose()
+    return
+  }
+
   const result = await new Promise<boolean>((resolve) => {
     emits(
       'submit',
       {
         color: currentColorIndex.value,
         size: currentSizeIndex.value,
-        count: productCount.value
+        count: productCount.value,
+        cartId: props.cartId
       },
       resolve
     )

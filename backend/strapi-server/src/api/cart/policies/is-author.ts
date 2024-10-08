@@ -11,12 +11,13 @@ export default async (policyContext, config, { strapi }) => {
       }
     },
   })
-  if (user.id !== enter.user.id) {
+  /*if (user.id !== enter.user.id) {
     return false
-  }
+  }*/
+  return user.id === enter.user.id
 
-  const { body: { data } } = policyContext.request
+  /*const { body: { data } } = policyContext.request
   const length = Object.keys(data).length
   // 一个put请求必须要更新quantity字段，不传或者多传其他字段都会返回403
-  return length === 1 && 'quantity' in data
+  return length === 1 && 'quantity' in data*/
 }

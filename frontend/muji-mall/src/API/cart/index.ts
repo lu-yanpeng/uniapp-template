@@ -121,3 +121,24 @@ export const getCarts = async (page: number = 1) => {
     }
   }).then(({ data }) => data)) as StrapiResponse<Carts[]>
 }
+
+export const updateCart = async (cartId: number, params: {
+  quantity?: number
+  color?: number
+  size?: number
+}) => {
+  return (await uni.request({
+    method: 'PUT',
+    url: `${SERVER_ADDRESS}/api/carts/${cartId}`,
+    data: {
+      data: {
+        quantity: params.quantity,
+        color: params.color,
+        size: params.size
+      }
+    },
+    header: {
+      Authorization: `Bearer ${userStore.userInfo?.jwt}`
+    }
+  }).then(({ data }) => data)) as StrapiResponse<Carts[]>
+}

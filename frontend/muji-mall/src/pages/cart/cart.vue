@@ -3,13 +3,20 @@ import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import SignIn from '@/components/goto-sign-in/index.vue'
 import CartProductList from './components/cart-product-list.vue'
-import { getCarts, type Carts } from '@/API/cart'
+import { getCarts, type Carts, updateCart } from '@/API/cart'
 import ChooseSize from '@/components/choose-size/index.vue'
+import { useToast } from 'wot-design-uni'
+import LoadingComps from '@/components/loading/index.vue'
+
+const toast = useToast()
 
 const cartList = ref<Carts[]>([])
-onShow(async () => {
+const updateCartsList = async () => {
   const { data, meta } = await getCarts()
   cartList.value = data
+}
+onShow(async () => {
+  await updateCartsList()
 })
 
 const show = ref(false)
@@ -18,20 +25,63 @@ const currentOpenCartData = ref<{
   sizeIndex: number
   colorIndex: number
   product: Carts['attributes']['product']['data'] | null
+  cartId: number
 }>({
   count: 0,
   sizeIndex: -1,
   colorIndex: -1,
-  product: null
+  product: null,
+  cartId: -1
 })
 const onChooseSize = (args: {
   count: number
   sizeIndex: number
   colorIndex: number
   product: Carts['attributes']['product']['data']
-}) => {
+}, cartId: number) => {
   show.value = true
-  currentOpenCartData.value = args
+  currentOpenCartData.value = {
+    ...args,
+    cartId
+  }
+}
+
+const changeCart = async (args: {
+  color: number
+  size: number
+  count: number
+  cartId: number
+}, resolve: (v: boolean) => void) => {
+  loading.value = true
+  try {
+    await updateCart(args.cartId, {
+      quantity: args.count,
+      size: args.size,
+      color: args.color
+    })
+    resolve(true)
+    await updateCartsList()
+  } catch (e) {
+    resolve(false)
+    toast.warning('未知错误')
+  } finally {
+    loading.value = false
+  }
+}
+
+const loading = ref(false)
+const onModifyTotal = async (cartId: number, total: number) => {
+  loading.value = true
+  try {
+    await updateCart(cartId, {
+      quantity: total
+    })
+    await updateCartsList()
+  } catch (e) {
+    toast.warning('未知错误')
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 
@@ -47,7 +97,8 @@ const onChooseSize = (args: {
             :size-index="cart.attributes.size"
             :color-index="cart.attributes.color"
             :count="cart.attributes.quantity"
-            @choose-size="onChooseSize"
+            @choose-size="(args) => onChooseSize(args, cart.id)"
+            @modify-total="(total) => onModifyTotal(cart.id, total)"
           />
         </template>
 
@@ -79,7 +130,11 @@ const onChooseSize = (args: {
         :count="currentOpenCartData.count"
         :size-index="currentOpenCartData.sizeIndex"
         :color-index="currentOpenCartData.colorIndex"
+        :cart-id="currentOpenCartData.cartId"
+        @submit="changeCart"
       />
+
+      <loading-comps :show="loading" :z-index="1001" />
     </view>
   </sign-in>
 </template>
