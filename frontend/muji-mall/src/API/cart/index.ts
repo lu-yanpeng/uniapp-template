@@ -142,3 +142,58 @@ export const updateCart = async (cartId: number, params: {
     }
   }).then(({ data }) => data)) as StrapiResponse<Carts[]>
 }
+
+const filterProduct = (cartsId: number[]) => {
+  return useQsStringify({
+    filters: {
+      id: {
+        $in: cartsId
+      }
+    },
+    populate: {
+      product: {
+        fields: ['id'],
+        populate: {
+          sku: {
+            populate: {
+              sku: {
+                fields: ['id', 'size', 'price'],
+              },
+            }
+          }
+        }
+      }
+    }
+  })
+}
+type ProductPrice = {
+  id: number
+  attributes: {
+    color: number
+    size: number
+    quantity: number
+    product: {
+      data: {
+        id: number
+        attributes: {
+          sku: {
+            sku: {
+              id: number
+              size: string
+              price: number
+            }[]
+          }
+        }
+      }
+    }
+  }
+}
+export const getProductByCart = async (cartsId: number[]) => {
+  return (await uni.request({
+    method: 'GET',
+    url: `${SERVER_ADDRESS}/api/carts?${filterProduct(cartsId)}`,
+    header: {
+      Authorization: `Bearer ${userStore.userInfo?.jwt}`
+    }
+  }).then(({ data }) => data)) as StrapiResponse<ProductPrice[]>
+}

@@ -10,12 +10,14 @@ const props = withDefaults(
     sizeIndex: number
     colorIndex: number
     product: __CartProduct | null
+    selected: boolean
   }>(),
   {
     count: 1,
     sizeIndex: -1,
     colorIndex: -1,
-    product: null
+    product: null,
+    selected: false
   }
 )
 
@@ -29,12 +31,21 @@ const emits = defineEmits<{
     }
   ]
   modifyTotal: [total: number]
+  select: [state: boolean]
 }>()
+
+const __selected = ref(props.selected)
+const onSelect = (args: {
+ value: boolean
+}) => {
+  emits('select', args.value)
+}
 
 const _count = ref(props.count)
 watchEffect(() => {
   _count.value = props.count
 })
+// @ts-ignore
 const setTotal = ({ value }) => {
   emits('modifyTotal' , value)
 }
@@ -89,7 +100,7 @@ const size = computed(() => {
 
 <template>
   <view class="flex justify-center items-center px-[17px] py-[18px] bg-white">
-    <wd-checkbox :model-value="true" checked-color="#7f0019" size="large"></wd-checkbox>
+    <wd-checkbox v-model="__selected" @change="onSelect" checked-color="#7f0019" size="large" />
     <image class="w-[110px] h-[110px] bg-amber-600 mr-3" :src="cover" />
     <view class="flex-1 self-stretch grid [grid-template-rows:1fr_auto]">
       <view class="text-xs flex-1 text-[#1f1f21] line-clamp-2">{{ title }}</view>

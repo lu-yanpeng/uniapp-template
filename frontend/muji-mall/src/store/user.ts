@@ -4,6 +4,7 @@ import { login as apiLogin, verifyMe as apiVerifyMe } from '@/API/user'
 
 export const useUserStore = defineStore('user', () => {
   const USER_KEY = 'muji-mall-user'
+  const CART_SELECTED_KEY = 'cart-selected'
   type UserInfo = {
     id: number
     username: string
@@ -36,6 +37,7 @@ export const useUserStore = defineStore('user', () => {
 
   const logout = () => {
     localStorage.removeItem(USER_KEY)
+    localStorage.removeItem(CART_SELECTED_KEY)
     userInfo.value = null
   }
 
@@ -62,6 +64,7 @@ export const useUserStore = defineStore('user', () => {
     login,
     logout,
     userInfo,
-    verifyMe
+    verifyMe,
+    CART_SELECTED_KEY
   }
 })
