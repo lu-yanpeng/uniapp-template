@@ -66,9 +66,8 @@ const addressShow = ref<boolean>(false)
         <choice label="选择" @choice="$emit('addCart')">
           <text>选择尺码 颜色</text>
         </choice>
-
-        <view @click="show = true" class="flex pl-[3.125rem] items-center h-10">
-          <view class="flex-1 overflow-hidden">
+        <view class="flex pl-[3.125rem] items-center h-10">
+          <view class="flex-1 overflow-hidden" @click="$emit('addCart')">
             <scroll-view
               class="flex whitespace-nowrap"
               :scroll-x="true"
@@ -89,6 +88,7 @@ const addressShow = ref<boolean>(false)
           </view>
 
           <text
+            @click="$emit('addCart')"
             class="text-xs text-[#585858] whitespace-nowrap py-1.5 px-2 h-fit bg-[#f2f2f2] rounded-full"
             >共{{ productData?.sku.color.length }}种颜色可选</text
           >

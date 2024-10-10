@@ -96,14 +96,20 @@ const price = computed(() => {
 const size = computed(() => {
   return returnSize('size') as string
 })
+
+const gotoProduct = () => {
+  uni.navigateTo({
+    url: `/pages/product/product?id=${props.product?.id}`
+  })
+}
 </script>
 
 <template>
   <view class="flex justify-center items-center px-[17px] py-[18px] bg-white">
     <wd-checkbox v-model="__selected" @change="onSelect" checked-color="#7f0019" size="large" />
-    <image class="w-[110px] h-[110px] bg-amber-600 mr-3" :src="cover" />
+    <image class="w-[110px] h-[110px] bg-amber-600 mr-3" :src="cover" @click="gotoProduct" />
     <view class="flex-1 self-stretch grid [grid-template-rows:1fr_auto]">
-      <view class="text-xs flex-1 text-[#1f1f21] line-clamp-2">{{ title }}</view>
+      <view class="text-xs flex-1 text-[#1f1f21] line-clamp-2" @click="gotoProduct">{{ title }}</view>
       <view class="pt-1 pb-2">
         <view class="flex justify-between items-center my-2">
           <text class="text-[#7f0019] text-xs">¥{{ price }}</text>

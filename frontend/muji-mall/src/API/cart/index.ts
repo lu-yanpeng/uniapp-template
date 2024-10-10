@@ -197,3 +197,19 @@ export const getProductByCart = async (cartsId: number[]) => {
     }
   }).then(({ data }) => data)) as StrapiResponse<ProductPrice[]>
 }
+
+
+const delManyQuery = (cartsId: number[]) => {
+  return useQsStringify({
+    id: cartsId
+  })
+}
+export const delCarts = async (cartsId: number[]) => {
+  return (await uni.request({
+    method: 'DELETE',
+    url: `${SERVER_ADDRESS}/api/carts/del-many?${delManyQuery(cartsId)}`,
+    header: {
+      Authorization: `Bearer ${userStore.userInfo?.jwt}`
+    }
+  }).then(({ data }) => data)) as { del: number[] }
+}

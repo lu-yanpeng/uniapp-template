@@ -3,7 +3,7 @@ import { ref, watch, onMounted, computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import SignIn from '@/components/goto-sign-in/index.vue'
 import CartProductList from './components/cart-product-list.vue'
-import { getCarts, type Carts, updateCart, getProductByCart } from '@/API/cart'
+import { getCarts, type Carts, updateCart, getProductByCart, delCarts } from '@/API/cart'
 import ChooseSize from '@/components/choose-size/index.vue'
 import { useToast } from 'wot-design-uni'
 import LoadingComps from '@/components/loading/index.vue'
@@ -15,12 +15,13 @@ watch(() => userStore.userInfo, (userInfo) => {
   if (userInfo === null) {
     cartList.value = []
     selectedSet.value.clear()
+    selectedProduct.value = []
   }
 })
 
 const cartList = ref<Carts[]>([])
 const updateCartsList = async () => {
-  const { data, meta } = await getCarts()
+  const { data } = await getCarts()
   cartList.value = data
 }
 onShow(async () => {
@@ -84,6 +85,7 @@ const changeCart = async (
 }
 
 const loading = ref(false)
+// 点击商品计数器时，修改商品数量
 const onModifyTotal = async (cartId: number, total: number) => {
   loading.value = true
   try {
@@ -103,11 +105,19 @@ const onModifyTotal = async (cartId: number, total: number) => {
 const setup = ref(false)
 
 const CART_SELECTED = userStore.CART_SELECTED_KEY
+// 勾选商品时保存它的购物车id
 const selectedSet = ref<Set<number>>(new Set())
+// 更新已选商品的价格，方便计算总价
 const updateSelectedProduct = async () => {
+  const cartsId = Array.from(selectedSet.value.values())
+  if (!cartsId.length) {
+    selectedProduct.value = []
+    return
+  }
+
   loading.value = true
   try {
-    const { data } = await getProductByCart(Array.from(selectedSet.value.values()))
+    const { data } = await getProductByCart(cartsId)
     const result: typeof selectedProduct.value = []
     data.forEach(({ attributes, id: cartId }) => {
       const count = attributes.quantity
@@ -139,6 +149,7 @@ onMounted(async () => {
   }
 })
 
+const saveSelectedSet = () => localStorage.setItem(CART_SELECTED, JSON.stringify(Array.from(selectedSet.value.values())))
 // 保存当前用户已勾选的商品id到本地
 const onSelect = async (cartId: number, state: boolean) => {
   if (state) {
@@ -149,7 +160,7 @@ const onSelect = async (cartId: number, state: boolean) => {
     const index = selectedProduct.value.findIndex((product) => cartId === product.cartId)
     selectedProduct.value.splice(index, 1)
   }
-  localStorage.setItem(CART_SELECTED, JSON.stringify(Array.from(selectedSet.value.values())))
+  saveSelectedSet()
 }
 
 // 已勾选商品对应的价格和数量
@@ -158,6 +169,7 @@ const selectedProduct = ref<{
   price: number
   count: number
 }[]>([])
+// 已勾选的商品总价
 const productTotal = computed<number>(() => {
   let __total = 0
   selectedProduct.value.forEach((product) => {
@@ -165,6 +177,32 @@ const productTotal = computed<number>(() => {
   })
   return __total
 })
+
+// 删除购物车商品
+const delProduct = async () => {
+  const productList = Array.from(selectedSet.value.values())
+  if (!productList.length) {
+    return
+  }
+  loading.value = true
+  try {
+    const { del } = await delCarts(productList)
+    const delSet = new Set(del)
+    // 计算已删除商品和勾选商品的差集，以免有些商品没有删除而出现显示错误
+    selectedSet.value = new Set(
+      [...selectedSet.value].filter(x => !delSet.has(x))
+    )
+    saveSelectedSet()
+    await updateCartsList()
+    await updateSelectedProduct()
+  } catch (e) {
+    toast.error('意外错误')
+  } finally {
+    loading.value = false
+  }
+}
+
+const test = () => toast.show('待开发')
 </script>
 
 <template>
@@ -212,6 +250,7 @@ const productTotal = computed<number>(() => {
             <text class="text-[10px]">¥</text><text class="text-[18px]">{{ productTotal }}</text>
           </view>
           <view
+            @click="test"
             class="rounded-full bg-black text-white text-[13px] px-[34px] py-[10px] flex justify-center"
             >结算</view
           >
@@ -220,6 +259,7 @@ const productTotal = computed<number>(() => {
         <view v-show="setup" class="h-full flex items-center justify-end">
           <view
             class="rounded-full text-[13px] px-[34px] py-[10px] flex justify-center [border:1px_solid_#7f0019] text-[#7f0019]"
+            @click="delProduct"
             >删除</view
           >
         </view>
@@ -237,5 +277,6 @@ const productTotal = computed<number>(() => {
 
       <loading-comps :show="loading" :z-index="1001" />
     </view>
+    <wd-toast />
   </sign-in>
 </template>
