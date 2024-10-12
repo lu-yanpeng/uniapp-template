@@ -4,13 +4,16 @@ import { ref, watchEffect } from 'vue'
 const props = withDefaults(
   defineProps<{
     modelValue: boolean
+    zIndex: number
   }>(),
   {
-    modelValue: false
+    modelValue: false,
+    zIndex: 1000
   }
 )
 const emits = defineEmits<{
   'update:modelValue': [state: boolean]
+  close: []
 }>()
 
 const show = ref(false)
@@ -21,6 +24,7 @@ watchEffect(() => {
 const onClose = () => {
   show.value = false
   emits('update:modelValue', false)
+  emits('close')
 }
 </script>
 
@@ -30,7 +34,7 @@ const onClose = () => {
     position="bottom"
     custom-style="border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;"
     @after-leave="onClose"
-    :z-index="1000"
+    :z-index="zIndex"
   >
     <slot />
   </wd-popup>

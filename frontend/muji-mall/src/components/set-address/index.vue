@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, watchEffect } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { useAddressStore } from '@/store/address'
+import Popup from '@/components/popup/index.vue'
 
 const addressStore = useAddressStore()
 
@@ -22,18 +23,17 @@ watchEffect(() => {
 })
 
 // 初始化时，pickerView所展示的数据，设置第一个<picker-view-column>的索引
-const pickerViewIndex = computed(() => {
-  return [addressStore.prefectureList.indexOf(addressStore.prefecture)]
-})
+const pickerViewIndex = ref([addressStore.prefectureList.indexOf(addressStore.prefecture)])
 const currentPrefecture = ref<(typeof addressStore.prefectureList)[number]>(addressStore.prefecture)
 // 滚动选择地址时，保存当前地址索引
 const addressPickerChange = (e: { detail: { value: number[] } }) => {
   const { detail } = e
   currentPrefecture.value = addressStore.prefectureList[detail.value[0]]
 }
+
 const setAddress = () => {
-  onClose()
   addressStore.prefecture = currentPrefecture.value
+  onClose()
 }
 
 const onClose = () => {
@@ -43,10 +43,9 @@ const onClose = () => {
 </script>
 
 <template>
-  <wd-popup
+  <popup
     v-model="show"
-    position="bottom"
-    custom-style="border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;"
+    :z-index="1001"
     @close="onClose"
   >
     <!-- 设置地址 -->
@@ -74,5 +73,5 @@ const onClose = () => {
         <view @click="setAddress" class="text-base py-1.5 text-white bg-black rounded-full text-center">确定</view>
       </view>
     </view>
-  </wd-popup>
+  </popup>
 </template>

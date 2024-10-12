@@ -108,6 +108,6 @@ const addressShow = ref<boolean>(false)
     </popup>
 
     <!-- 弹出框，设置地址 -->
-    <set-address-comps v-model="addressShow" />
+    <set-address-comps v-model="addressShow" v-if="addressShow" />
   </view>
 </template>

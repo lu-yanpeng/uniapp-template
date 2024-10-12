@@ -1,29 +1,38 @@
 <script setup lang="ts">
-import { onLoad } from '@dcloudio/uni-app'
-import { ref } from 'vue'
-// @ts-ignore
-import Activity from 'remote-app/activity'
+import { defineAsyncComponent, computed, watchEffect } from 'vue'
 
-const componentId = ref<string | null>(null)
+const props = withDefaults(
+  defineProps<{
+    componentId: 'a' | 'b' | 'c' | 'd' | 'default'
+    title: string
+  }>(),
+  {
+    componentId: 'default',
+    title: '活动'
+  }
+)
 
-// @ts-ignore
-onLoad((query: {
-  title: string
-  'component-id': string
-}) => {
+watchEffect(() => {
   uni.setNavigationBarTitle({
-    title: query.title
+    title: props.title
   })
-  componentId.value = query['component-id']
 })
 
-const mounted = () => {
-  console.log('挂载')
-}
+const compsSet = new Set(['a', 'b', 'c', 'd'])
+const compsId = computed(() => {
+  if (compsSet.has(props.componentId)) {
+    return props.componentId
+  }
+  return 'default'
+})
+
+const comps = defineAsyncComponent(() => import(`./pages/${compsId.value}/index.vue`))
 </script>
 
 <template>
   <view>
-    <activity @mounted="mounted" v-if="componentId" :component-id="componentId" />
+    <text>当前活动{{ componentId }}</text>
+
+    <component :is="comps" />
   </view>
 </template>

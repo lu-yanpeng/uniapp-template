@@ -31,7 +31,7 @@ onMounted(async () => {
 
 const goto = (componentId: string, title: string) => {
   uni.navigateTo({
-    url: `/pages/activity/activity?component-id=${componentId}&title=${title}`
+    url: `/pages/activity/activity?componentId=${componentId}&title=${title}`
   })
 }
 </script>

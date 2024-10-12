@@ -41,7 +41,7 @@ onMounted(async () => {
       <swiper-item v-for="(value, key) in bannerList" :key="key">
         <navigator
           class="w-full h-full"
-          :url="`/pages/activity/activity?component-id=${value.componentId}&title=${value.title}`"
+          :url="`/pages/activity/activity?componentId=${value.componentId}&title=${value.title}`"
         >
           <image :src="value.imgSrc" class="w-full h-full" mode="aspectFill" :lazy-load="true" />
         </navigator>
