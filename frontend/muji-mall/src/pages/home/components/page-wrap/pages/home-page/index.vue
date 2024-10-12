@@ -95,6 +95,7 @@ export default defineComponent({
         .selectViewport()
         .boundingClientRect((res: any) => {
           // 再用视口高度减去导航栏高度，就是滚动区域的高度
+          // tabBar默认高度是50，这里还需要减去它的高度
           this.viewportHeight = Math.ceil(res.height)
         })
         .exec()
@@ -102,7 +103,7 @@ export default defineComponent({
   },
   computed: {
     scrollViewHeight() {
-      return this.viewportHeight - (unref(this.homeNavHeight) as number) - this.pageNavHeight
+      return this.viewportHeight - (unref(this.homeNavHeight) as number) - this.pageNavHeight - 50
     }
   },
   watch: {

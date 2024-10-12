@@ -1,6 +1,6 @@
 export type StrapiResponse<Body extends Record<string, any>> = {
   data: Body
-  meta?: {
+  meta: {
     pagination?: {
       page: number
       pageSize: number

@@ -12,15 +12,21 @@ const videoData = ref<{
   poster: ''
 })
 onMounted(async () => {
-  const {
-    data: {
-      attributes: { video, poster }
-    }
-  } = await getVideo()
+  try {
+    const {
+      data: {
+        attributes: { video, poster }
+      }
+    } = await getVideo()
 
-  videoData.value = {
-    videoSrc: `${SERVER_ADDRESS}${video.data.attributes.url}`,
-    poster: `${SERVER_ADDRESS}${poster.data.attributes.url}`
+    if (video && poster) {
+      videoData.value = {
+        videoSrc: `${SERVER_ADDRESS}${video.data.attributes.url}`,
+        poster: `${SERVER_ADDRESS}${poster.data.attributes.url}`
+      }
+    }
+  } catch (e) {
+    console.log('未知错误 video')
   }
 })
 </script>

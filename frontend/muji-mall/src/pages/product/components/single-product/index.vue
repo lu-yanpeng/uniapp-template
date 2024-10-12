@@ -6,6 +6,11 @@ import ProductTabBar from './tab-bar.vue'
 import { onMounted, provide, readonly, ref } from 'vue'
 import { getProduct, type Product } from '@/API/products'
 import { productSymbol } from '@/pages/product/symbol-keys'
+import ChooseSize from '@/components/choose-size/index.vue'
+import { addCart as apiAddCart } from '@/API/cart/index'
+import { useUserStore } from '@/store/user'
+import { useToast } from 'wot-design-uni'
+import LoadingComp from '@/components/loading/index.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -15,18 +20,60 @@ const props = withDefaults(
 )
 
 const productData = ref<Product['attributes'] | null>(null)
+const currentProductId = ref<number | null>(null)
 provide(productSymbol, readonly(productData))
+const userStore = useUserStore()
+const toast = useToast()
 
 onMounted(async () => {
   let id = props.productId
   if (id) {
     const { data } = await getProduct(id)
+    currentProductId.value = data.id
     productData.value = data.attributes
   }
 })
 
 const goBack = () => {
   uni.navigateBack()
+}
+
+const visibleCart = ref(false)
+const count = ref(1)
+const sizeIndex = ref(-1)
+const colorIndex = ref(-1)
+
+const addCart = () => {
+  visibleCart.value = true
+}
+
+// 关闭选择颜色的窗口后保存之前选择的颜色数据
+const onClose = (args: { color: number; size: number; count: number }) => {
+  count.value = args.count
+  colorIndex.value = args.color
+  sizeIndex.value = args.size
+}
+
+const loading = ref(false)
+// 购物车点击确定
+const onSubmit = async (args: { color: number; size: number; count: number }, callback: (value: boolean) => void) => {
+  loading.value = true
+  try {
+    await apiAddCart({
+      quantity: args.count,
+      size: args.size,
+      color: args.color,
+      user: userStore.userInfo?.id as number,
+      product: currentProductId.value as number
+    })
+    callback(true)
+    toast.show('添加成功')
+  } catch (e) {
+    callback(false)
+    toast.warning('网络异常，请重试')
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 
@@ -63,13 +110,26 @@ const goBack = () => {
       >
         <view>
           <product-banner />
-          <product-details />
+          <product-details @add-cart="addCart" />
           <product-main />
         </view>
       </scroll-view>
 
-      <product-tab-bar />
+      <product-tab-bar @add-cart="addCart" />
     </view>
+
+    <choose-size
+      v-model:show="visibleCart"
+      :data="productData"
+      :count="count"
+      :size-index="sizeIndex"
+      :color-index="colorIndex"
+      @close="onClose"
+      @submit="onSubmit"
+    />
+
+    <wd-toast />
+
+    <loading-comp :show="loading" :z-index="1002" />
   </view>
 </template>
-

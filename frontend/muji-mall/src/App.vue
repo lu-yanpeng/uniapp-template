@@ -2,6 +2,7 @@
 import { ref, provide, readonly } from 'vue'
 import { onLaunch } from '@dcloudio/uni-app'
 import { WxMenuButtonSymbol, WxNavHeightSymbol } from './symbol-keys'
+import { useUserStore } from '@/store/user'
 
 // 微信导航栏高度，只有在微信小程序才会获取高度
 const wxNavHeight = ref<number>(0)
@@ -9,7 +10,9 @@ provide(WxNavHeightSymbol, readonly(wxNavHeight))
 const wxMenuButton = ref<number>(0)
 provide(WxMenuButtonSymbol, readonly(wxMenuButton))
 
-onLaunch(() => {
+const userStore = useUserStore()
+
+onLaunch(async () => {
   // #ifdef MP-WEIXIN
   const statusBarHeight = Math.ceil(uni.getSystemInfoSync().statusBarHeight as number)
 
@@ -20,6 +23,9 @@ onLaunch(() => {
   wxMenuButton.value = height + (top - statusBarHeight) * 2
   wxNavHeight.value = wxMenuButton.value + statusBarHeight
   // #endif
+
+  // 每次启动时都判断jwt是否有效
+  await userStore.verifyMe()
 
   /*// 拦截器，拦截request API，让所有的请求只返回data字段，不返回其他内容
   // 不建议使用，这样做会导致编辑器类型报错，它不知道这里进行了拦截，

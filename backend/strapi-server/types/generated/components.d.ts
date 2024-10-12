@@ -12,6 +12,28 @@ export interface BannerBanner extends Schema.Component {
   };
 }
 
+export interface CartListCartList extends Schema.Component {
+  collectionName: 'components_cart_list_cart_lists';
+  info: {
+    displayName: 'cart-list';
+  };
+  attributes: {
+    product: Attribute.Relation<
+      'cart-list.cart-list',
+      'oneToOne',
+      'api::product.product'
+    >;
+    count: Attribute.Integer &
+      Attribute.Required &
+      Attribute.SetMinMax<
+        {
+          min: 1;
+        },
+        number
+      >;
+  };
+}
+
 export interface ColorsColors extends Schema.Component {
   collectionName: 'components_colors_colors';
   info: {
@@ -182,6 +204,7 @@ declare module '@strapi/types' {
   export module Shared {
     export interface Components {
       'banner.banner': BannerBanner;
+      'cart-list.cart-list': CartListCartList;
       'colors.colors': ColorsColors;
       'details.details': DetailsDetails;
       'dict.dict': DictDict;

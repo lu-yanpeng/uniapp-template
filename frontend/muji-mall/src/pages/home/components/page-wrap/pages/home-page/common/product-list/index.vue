@@ -21,18 +21,21 @@ const props = withDefaults(
 const products = ref<Products>([])
 const orderBy = computed(() => props.sort.split(','))
 onMounted(async () => {
-  const { data } = await getProductList(1, 8, orderBy.value)
-
-  data.map(({ attributes: { spu }, id }) => {
-    products.value.push({
-      id,
-      title: spu.title,
-      sales: spu.sales,
-      coverSrc: SERVER_ADDRESS + spu.cover.data.attributes.url,
-      min_list_price: spu.min_list_price,
-      max_list_price: spu.max_list_price
+  try {
+    const { data } = await getProductList(1, 8, orderBy.value)
+    data.map(({ attributes: { spu }, id }) => {
+      products.value.push({
+        id,
+        title: spu.title,
+        sales: spu.sales,
+        coverSrc: SERVER_ADDRESS + (spu.cover.data ? spu.cover.data.attributes.url : '') as string,
+        min_list_price: spu.min_list_price,
+        max_list_price: spu.max_list_price
+      })
     })
-  })
+  } catch (e) {
+    console.error('未知错误 product list', e)
+  }
 })
 
 const showMore = () => {
