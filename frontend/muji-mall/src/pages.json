@@ -12,21 +12,21 @@
       "path": "pages/login/login",
       "style": {
         "navigationBarTitleText": "登录",
-        "enablePullDownRefresh": true
+        "enablePullDownRefresh": false
       }
     },
     {
       "path": "pages/activity/activity",
       "style": {
         "navigationBarTitleText": "活动",
-        "enablePullDownRefresh": true
+        "enablePullDownRefresh": false
       }
     },
     {
       "path": "pages/product/product",
       "style": {
         "navigationBarTitleText": "商品详情",
-        "enablePullDownRefresh": true,
+        "enablePullDownRefresh": false,
         "navigationStyle": "custom"
       }
     },
@@ -34,7 +34,7 @@
       "path": "pages/me/me",
       "style": {
         "navigationBarTitleText": "我的",
-        "enablePullDownRefresh": true,
+        "enablePullDownRefresh": false,
         "navigationStyle": "custom"
       }
     },
@@ -42,7 +42,7 @@
       "path": "pages/star/star",
       "style": {
         "navigationBarTitleText": "收藏",
-        "enablePullDownRefresh": true,
+        "enablePullDownRefresh": false,
         "navigationStyle": "custom"
       }
     },
@@ -50,7 +50,7 @@
       "path": "pages/cart/cart",
       "style": {
         "navigationBarTitleText": "购物车",
-        "enablePullDownRefresh": true,
+        "enablePullDownRefresh": false,
         "navigationStyle": "custom"
       }
     }

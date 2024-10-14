@@ -88,7 +88,11 @@ watch(
         // 未选择尺寸时设置默认价格
         if (props.sizeIndex === -1) {
           const spu = productData.spu
-          currentPrice.value = `${spu.min_list_price}~${spu.max_list_price}`
+          if (spu.min_list_price !== spu.max_list_price) {
+            currentPrice.value = `${spu.min_list_price}~${spu.max_list_price}`
+          } else {
+            currentPrice.value = `${spu.min_list_price}`
+          }
         } else {
           const __sku = sku.get(props.sizeIndex)
           currentPrice.value = String(__sku?.price)
@@ -205,7 +209,11 @@ const choiceSize = (skuObj: {
   if (currentSizeIndex.value === -1) {
     const spu = props?.data?.spu
     if (spu) {
-      currentPrice.value = `${spu.min_list_price}~${spu.max_list_price}`
+      if (spu.min_list_price !== spu.max_list_price) {
+        currentPrice.value = `${spu.min_list_price}~${spu.max_list_price}`
+      } else {
+        currentPrice.value = `${spu.min_list_price}`
+      }
     }
     currentSize.value = ''
   } else {

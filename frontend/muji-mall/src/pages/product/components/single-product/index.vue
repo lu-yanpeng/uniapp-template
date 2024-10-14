@@ -101,7 +101,7 @@ const onSubmit = async (args: { color: number; size: number; count: number }, ca
       <view class="uni-placeholder"></view>
     </view>
 
-    <view class="grid [grid-template-rows:1fr_auto] [height:calc(100dvh-44px)]">
+    <view class=" relative [height:calc(100dvh-44px)] pb-[50px]">
       <scroll-view
         class="overflow-y-scroll h-full"
         :scroll-y="true"
@@ -115,7 +115,7 @@ const onSubmit = async (args: { color: number; size: number; count: number }, ca
         </view>
       </scroll-view>
 
-      <product-tab-bar @add-cart="addCart" />
+      <product-tab-bar @add-cart="addCart" class="fixed bottom-0" />
     </view>
 
     <choose-size

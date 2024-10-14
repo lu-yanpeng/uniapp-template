@@ -29,7 +29,7 @@ const goHome = () => {
 </script>
 
 <template>
-  <view class="h-[3.15rem] [border-top:1px_solid_#e5e5e5] flex justify-between items-center px-3.5 gap-x-6">
+  <view class="h-[3.15rem] bg-white [border-top:1px_solid_#e5e5e5] flex justify-between items-center px-3.5 gap-x-6">
     <view class="flex justify-between gap-3.5 flex-1">
       <view class="flex flex-col items-center" @click="goHome">
         <image class="w-5 aspect-[1/1] h-auto" src="../../img/home.png" />
